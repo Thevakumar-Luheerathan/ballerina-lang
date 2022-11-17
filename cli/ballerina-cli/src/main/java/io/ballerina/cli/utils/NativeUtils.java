@@ -20,17 +20,22 @@ package io.ballerina.cli.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import io.ballerina.projects.Module;
 import io.ballerina.projects.Package;
 import io.ballerina.runtime.internal.util.RuntimeUtils;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static io.ballerina.identifier.Utils.encodeNonFunctionIdentifier;
 import static org.ballerinalang.test.runtime.util.TesterinaConstants.ANON_ORG;
@@ -46,7 +51,8 @@ public class NativeUtils {
     private static final String MODULE_CONFIGURATION_MAPPER = "$configurationMapper";
     private static final String MODULE_EXECUTE_GENERATED = "tests.test_execute-generated_";
 
-    public static void createReflectConfig(Path nativeConfigPath, Package currentPackage) throws IOException {
+    public static void createReflectConfig(Path nativeConfigPath, Package currentPackage,
+                                           List<String> classesWithFunctionMock) throws IOException {
         String org = currentPackage.packageOrg().toString();
         String version = currentPackage.packageVersion().toString();
 
@@ -117,6 +123,9 @@ public class NativeUtils {
             ReflectConfigClass testNameZeroName =
                     new ReflectConfigClass(getQualifiedClassName(org, name, version, name));
             testNameZeroName.setQueryAllDeclaredMethods(true);
+            testNameZeroName.setAllDeclaredFields(true);
+            testNameZeroName.setUnsafeAllocated(true);
+
 
             // Add all class values to the array
             classList.add(testInitClass);
@@ -127,6 +136,42 @@ public class NativeUtils {
 
             // Increment tally to cover executable_<tally> class
             tally += 1;
+
+            Path mockedFunctionClassPath = nativeConfigPath.resolve("mocked-func-class-map.json");
+            try (BufferedReader br = Files.newBufferedReader(mockedFunctionClassPath, StandardCharsets.UTF_8)) {
+                Gson gsonRead = new Gson();
+                Map<String, String[]> testFileMockedFunctionMapping = gsonRead.fromJson(br,
+                        new TypeToken<Map<String, String[]>>() { }.getType());
+                if (!testFileMockedFunctionMapping.isEmpty()) {
+                    ReflectConfigClass mockedFunctionRefConfClz;
+                    for (Map.Entry<String, String[]> testFileMockedFunctionMappingEntry :
+                            testFileMockedFunctionMapping.entrySet()) {
+                        String testFile = testFileMockedFunctionMappingEntry.getKey();
+                        String [] mockedFunctions = testFileMockedFunctionMappingEntry.getValue();
+                        if (mockedFunctions.length > 0) {
+                            mockedFunctionRefConfClz = new ReflectConfigClass(getQualifiedClassName(org, name,
+                                    version, testFile));
+                            for (int i = 0; i < mockedFunctions.length; i++) {
+                                mockedFunctionRefConfClz.addReflectConfigClassMethod(
+                                        new ReflectConfigClassMethod(mockedFunctions[i]));
+                                mockedFunctionRefConfClz.setUnsafeAllocated(true);
+                                mockedFunctionRefConfClz.setAllDeclaredFields(true);
+                                mockedFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+                            }
+                            classList.add(mockedFunctionRefConfClz);
+                        }
+                    }
+                }
+            }
+        }
+
+        ReflectConfigClass originalFunctionRefConfClz;
+        for (String classWithFunctionMock : classesWithFunctionMock) {
+            originalFunctionRefConfClz = new ReflectConfigClass(classWithFunctionMock);
+            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+            originalFunctionRefConfClz.setUnsafeAllocated(true);
+            classList.add(originalFunctionRefConfClz);
         }
 
         ReflectConfigClass runtimeEntityTestSuite = new ReflectConfigClass("org.ballerinalang.test.runtime.entity" +
@@ -135,6 +180,7 @@ public class NativeUtils {
         runtimeEntityTestSuite.setUnsafeAllocated(true);
 
         classList.add(runtimeEntityTestSuite);
+
 
         // Write the array to the config file
         try (Writer writer = new FileWriter(nativeConfigPath.resolve("reflect-config.json").toString(),

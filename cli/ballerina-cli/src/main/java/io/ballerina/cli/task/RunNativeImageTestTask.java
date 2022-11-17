@@ -186,6 +186,7 @@ public class RunNativeImageTestTask implements Task {
         // as "." are ignored. This is to be consistent with the "bal test" command which only executes tests
         // in packages.
         Map<String, String> functionMockModuleMapping = new HashMap<>();
+        List<String> classesWithFunctionMock = new ArrayList<>();
         for (ModuleDescriptor moduleDescriptor :
                 project.currentPackage().moduleDependencyGraph().toTopologicallySortedList()) {
             Module module = project.currentPackage().module(moduleDescriptor.name());
@@ -216,6 +217,7 @@ public class RunNativeImageTestTask implements Task {
                 throw createLauncherException("error occurred while running tests", e);
             }
             if (isMockFuncExist) {
+                extractClassesWithFunctionMock(suite, classesWithFunctionMock);
                 suite.removeAllMockFunctions();
             }
             String resolvedModuleName =
@@ -225,6 +227,12 @@ public class RunNativeImageTestTask implements Task {
         }
 
         TestUtils.writeToTestSuiteJson(testSuiteMap, testsCachePath);
+        try {
+            Path nativeConfigPath = target.getNativeConfigPath();
+            createReflectConfig(nativeConfigPath, project.currentPackage(), classesWithFunctionMock);
+        } catch (IOException e) {
+            throw createLauncherException("error while generating the necessary graalvm reflection config ", e);
+        }
 
         if (hasTests) {
             int testResult = 1;
@@ -268,6 +276,14 @@ public class RunNativeImageTestTask implements Task {
         TestUtils.cleanTempCache(project, cachesRoot);
         if (project.buildOptions().dumpBuildTime()) {
             BuildTime.getInstance().testingExecutionDuration = System.currentTimeMillis() - start;
+        }
+    }
+
+    private void extractClassesWithFunctionMock(TestSuite suite, List<String> classesWithFunctionMock) {
+        Map<String, String> mockFunctionNamesMap = suite.getMockFunctionNamesMap();
+        for (Map.Entry<String,String> mockFunctionNameEntry : mockFunctionNamesMap.entrySet()) {
+            String classWithFunctionMock = ((mockFunctionNameEntry.getKey()).split("#"))[0];
+            classesWithFunctionMock.add(classWithFunctionMock);
         }
     }
 
@@ -352,8 +368,6 @@ public class RunNativeImageTestTask implements Task {
         Path nativeConfigPath = target.getNativeConfigPath();   // <abs>target/cache/test_cache/native-config
         Path nativeTargetPath = target.getNativePath();         // <abs>target/native
 
-        // Create Configs
-        createReflectConfig(nativeConfigPath, currentPackage);
 
         // Run native-image command with generated configs
         cmdArgs.addAll(Lists.of("-cp", classPath));
