@@ -22,14 +22,17 @@ import io.ballerina.compiler.syntax.tree.ExpressionNode;
 import io.ballerina.compiler.syntax.tree.ExpressionStatementNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyBlockNode;
 import io.ballerina.compiler.syntax.tree.FunctionBodyNode;
+import io.ballerina.compiler.syntax.tree.FunctionCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.FunctionDefinitionNode;
 import io.ballerina.compiler.syntax.tree.ImportDeclarationNode;
 import io.ballerina.compiler.syntax.tree.MethodCallExpressionNode;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
+import io.ballerina.compiler.syntax.tree.NameReferenceNode;
 import io.ballerina.compiler.syntax.tree.Node;
 import io.ballerina.compiler.syntax.tree.NodeFactory;
 import io.ballerina.compiler.syntax.tree.NodeList;
+import io.ballerina.compiler.syntax.tree.QualifiedNameReferenceNode;
 import io.ballerina.compiler.syntax.tree.StatementNode;
 import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.compiler.syntax.tree.Token;
@@ -59,8 +62,8 @@ public class TestExecutionGenerationTask implements GeneratorTask<SourceGenerato
 
     @Override
     public void generate(SourceGeneratorContext generatorContext) {
-       generateClassMockedFunctionMapping(generatorContext.currentPackage(), generatorContext);
-       for (ModuleId moduleId : generatorContext.currentPackage().moduleIds()) {
+        generateClassMockedFunctionMapping(generatorContext.currentPackage(), generatorContext);
+        for (ModuleId moduleId : generatorContext.currentPackage().moduleIds()) {
             Module module = generatorContext.currentPackage().module(moduleId);
             // Code generation skipped for the module since no tests are available.
             if (module.testDocumentIds().isEmpty()) {
@@ -169,32 +172,35 @@ public class TestExecutionGenerationTask implements GeneratorTask<SourceGenerato
         Map<String, List<String>> testFileMockedFunctionMapping = new HashMap<>();
         for (ModuleId moduleId : pack.moduleIds()) {
             Module module = pack.module(moduleId);
+            String moduleName = module.moduleName().toString();
             for (DocumentId documentId : module.testDocumentIds()) {
                 Document document = module.document(documentId);
-                String documentName = document.name().replace(".bal","")
-                        .replace("/",".");
+                String documentName = moduleName + "-" + document.name().replace(".bal", "")
+                        .replace("/", ".");
                 List<String> mockedFunctionList = new ArrayList<>();
                 Node node = document.syntaxTree().rootNode();
                 TestFunctionVisitor testFunctionVisitor = new TestFunctionVisitor();
                 node.accept(testFunctionVisitor);
-                for (FunctionDefinitionNode func: testFunctionVisitor.getTestStaticFunctions()) {
+                for (FunctionDefinitionNode func : testFunctionVisitor.getTestStaticFunctions()) {
                     FunctionBodyNode functionBodyNode = func.functionBody();
                     NodeList statements = ((FunctionBodyBlockNode) functionBodyNode).statements();
                     for (int i = 0; i < statements.size(); i++) {
                         StatementNode functionBodyContent = (StatementNode) statements.get(i);
                         if (functionBodyContent instanceof ExpressionStatementNode) {
                             ExpressionNode methodCallNode = ((ExpressionStatementNode) functionBodyContent)
-                                                            .expression();
+                                    .expression();
                             if (methodCallNode instanceof MethodCallExpressionNode) {
-                               String expression = ((MethodCallExpressionNode) methodCallNode).expression()
-                                       .toString().strip();
-                               String methodName = ((MethodCallExpressionNode) methodCallNode).methodName()
-                                       .toString().strip();
-                               if (expression.startsWith("test:when") && "call".equals(methodName)) {
-                                   String mockedFunction = ((MethodCallExpressionNode) methodCallNode).arguments()
-                                           .get(0).toString().replaceAll("\"","");
-                                   mockedFunctionList.add(mockedFunction);
-                               }
+                                ExpressionNode expression = ((MethodCallExpressionNode) methodCallNode).expression();
+                                if (expression instanceof FunctionCallExpressionNode) {
+                                    gatherMockedFunctions(mockedFunctionList, (MethodCallExpressionNode)
+                                            methodCallNode, (FunctionCallExpressionNode) expression);
+                                } else if (expression instanceof MethodCallExpressionNode) {
+                                    expression = ((MethodCallExpressionNode) expression).expression();
+                                    if (expression instanceof FunctionCallExpressionNode) {
+                                        gatherMockedFunctions(mockedFunctionList, (MethodCallExpressionNode)
+                                                methodCallNode, (FunctionCallExpressionNode) expression);
+                                    }
+                                }
                             }
                         }
                     }
@@ -205,6 +211,25 @@ public class TestExecutionGenerationTask implements GeneratorTask<SourceGenerato
         Path cachePath = pack.project().targetDir().resolve("cache").resolve("tests_cache")
                 .resolve("native-config");
         TesterinaCompilerPluginUtils.writeCacheMapAsJson(testFileMockedFunctionMapping, cachePath,
-                "mocked-func-class-map.json" );
+                "mocked-func-class-map.json");
+    }
+
+    private static void gatherMockedFunctions(List<String> mockedFunctionList,  MethodCallExpressionNode methodCallNode,
+                                              FunctionCallExpressionNode expression) {
+        NameReferenceNode functionName = expression.functionName();
+        if (functionName instanceof QualifiedNameReferenceNode) {
+            String modulePrefix = ((QualifiedNameReferenceNode) functionName).
+                    modulePrefix().text();
+            String identifier = ((QualifiedNameReferenceNode) functionName).
+                    identifier().text();
+            String methodName = methodCallNode.methodName()
+                    .toString().strip();
+            if ("test".equals(modulePrefix) && "call".equals(methodName)
+                    && "when".equals(identifier)) {
+                String mockedFunction = methodCallNode.arguments()
+                        .get(0).toString().replaceAll("\"", "");
+                mockedFunctionList.add(mockedFunction);
+            }
+        }
     }
 }

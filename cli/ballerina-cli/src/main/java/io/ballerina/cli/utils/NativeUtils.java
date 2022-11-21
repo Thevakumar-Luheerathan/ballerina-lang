@@ -26,6 +26,7 @@ import io.ballerina.projects.Package;
 import io.ballerina.runtime.internal.util.RuntimeUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import static io.ballerina.identifier.Utils.encodeNonFunctionIdentifier;
+import static io.ballerina.runtime.api.constants.RuntimeConstants.FILE_NAME_PERIOD_SEPARATOR;
 import static org.ballerinalang.test.runtime.util.TesterinaConstants.ANON_ORG;
 import static org.ballerinalang.test.runtime.util.TesterinaConstants.DOT;
 
@@ -51,8 +53,8 @@ public class NativeUtils {
     private static final String MODULE_CONFIGURATION_MAPPER = "$configurationMapper";
     private static final String MODULE_EXECUTE_GENERATED = "tests.test_execute-generated_";
 
-    public static void createReflectConfig(Path nativeConfigPath, Package currentPackage,
-                                           List<String> classesWithFunctionMock) throws IOException {
+    public static void createReflectConfig(Path nativeConfigPath, Package currentPackage, Map<String, List<String>>
+                                                                balFileClassOrigMockFuncMapping) throws IOException {
         String org = currentPackage.packageOrg().toString();
         String version = currentPackage.packageVersion().toString();
 
@@ -120,8 +122,8 @@ public class NativeUtils {
                     )
             );
 
-            ReflectConfigClass testNameZeroName =
-                    new ReflectConfigClass(getQualifiedClassName(org, name, version, name));
+            ReflectConfigClass testNameZeroName = new ReflectConfigClass(
+                    getQualifiedClassName(org, name, version, name.replace(DOT, FILE_NAME_PERIOD_SEPARATOR)));
             testNameZeroName.setQueryAllDeclaredMethods(true);
             testNameZeroName.setAllDeclaredFields(true);
             testNameZeroName.setUnsafeAllocated(true);
@@ -137,42 +139,62 @@ public class NativeUtils {
             // Increment tally to cover executable_<tally> class
             tally += 1;
 
-            Path mockedFunctionClassPath = nativeConfigPath.resolve("mocked-func-class-map.json");
+        }
+
+        Path mockedFunctionClassPath = nativeConfigPath.resolve("mocked-func-class-map.json");
+        File mockedFunctionClassFile = new File(mockedFunctionClassPath.toString());
+        if (mockedFunctionClassFile.isFile()) {
             try (BufferedReader br = Files.newBufferedReader(mockedFunctionClassPath, StandardCharsets.UTF_8)) {
                 Gson gsonRead = new Gson();
                 Map<String, String[]> testFileMockedFunctionMapping = gsonRead.fromJson(br,
-                        new TypeToken<Map<String, String[]>>() { }.getType());
+                        new TypeToken<Map<String, String[]>>() {
+                        }.getType());
                 if (!testFileMockedFunctionMapping.isEmpty()) {
-                    ReflectConfigClass mockedFunctionRefConfClz;
+                    ReflectConfigClass originalTestFileRefConfClz;
                     for (Map.Entry<String, String[]> testFileMockedFunctionMappingEntry :
                             testFileMockedFunctionMapping.entrySet()) {
-                        String testFile = testFileMockedFunctionMappingEntry.getKey();
-                        String [] mockedFunctions = testFileMockedFunctionMappingEntry.getValue();
+                        String moduleName = testFileMockedFunctionMappingEntry.getKey().split("-")[0];
+                        String testFile = testFileMockedFunctionMappingEntry.getKey().split("-")[1];
+                        String[] mockedFunctions = testFileMockedFunctionMappingEntry.getValue();
                         if (mockedFunctions.length > 0) {
-                            mockedFunctionRefConfClz = new ReflectConfigClass(getQualifiedClassName(org, name,
+                            originalTestFileRefConfClz = new ReflectConfigClass(getQualifiedClassName(org, moduleName,
                                     version, testFile));
                             for (int i = 0; i < mockedFunctions.length; i++) {
-                                mockedFunctionRefConfClz.addReflectConfigClassMethod(
+                                originalTestFileRefConfClz.addReflectConfigClassMethod(
                                         new ReflectConfigClassMethod(mockedFunctions[i]));
-                                mockedFunctionRefConfClz.setUnsafeAllocated(true);
-                                mockedFunctionRefConfClz.setAllDeclaredFields(true);
-                                mockedFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+                                originalTestFileRefConfClz.setUnsafeAllocated(true);
+                                originalTestFileRefConfClz.setAllDeclaredFields(true);
+                                originalTestFileRefConfClz.setQueryAllDeclaredMethods(true);
                             }
-                            classList.add(mockedFunctionRefConfClz);
+                            classList.add(originalTestFileRefConfClz);
                         }
                     }
                 }
             }
         }
+        ReflectConfigClass originalBalFileRefConfClz;
+        for (Map.Entry<String, List<String>> balFileClassOrigMockFuncEntry :
+                balFileClassOrigMockFuncMapping.entrySet()) {
+            if (balFileClassOrigMockFuncEntry.getValue().size() > 0) {
+                originalBalFileRefConfClz = new ReflectConfigClass(balFileClassOrigMockFuncEntry.getKey());
+                for (String methodName : balFileClassOrigMockFuncEntry.getValue()) {
+                    originalBalFileRefConfClz.addReflectConfigClassMethod(new ReflectConfigClassMethod(methodName));
+                }
+                originalBalFileRefConfClz.setQueryAllDeclaredMethods(true);
+                originalBalFileRefConfClz.setQueryAllDeclaredMethods(true);
+                originalBalFileRefConfClz.setUnsafeAllocated(true);
+            }
+        }
 
         ReflectConfigClass originalFunctionRefConfClz;
-        for (String classWithFunctionMock : classesWithFunctionMock) {
-            originalFunctionRefConfClz = new ReflectConfigClass(classWithFunctionMock);
-            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
-            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
-            originalFunctionRefConfClz.setUnsafeAllocated(true);
-            classList.add(originalFunctionRefConfClz);
-        }
+
+//        for (String classWithFunctionMock : balFileClassOrigMockFuncMapping) {
+//            originalFunctionRefConfClz = new ReflectConfigClass(classWithFunctionMock);
+//            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+//            originalFunctionRefConfClz.setQueryAllDeclaredMethods(true);
+//            originalFunctionRefConfClz.setUnsafeAllocated(true);
+//            classList.add(originalFunctionRefConfClz);
+//        }
 
         ReflectConfigClass runtimeEntityTestSuite = new ReflectConfigClass("org.ballerinalang.test.runtime.entity" +
                 ".TestSuite");
