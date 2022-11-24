@@ -48,6 +48,7 @@ public class FunctionMock {
                 mockFuncObj.getStringValue(StringUtils.fromString("functionToMockPackage")).toString();
         String[] mockFunctionClasses =
                 mockFuncObj.getArrayValue(StringUtils.fromString("mockFunctionClasses")).getStringArray();
+        System.out.println("HANDLER-INFO "+ originalFunction + " " + originalFunctionPackage+ " " +mockFunctionClasses);
 
         String[] splitInfo = originalFunctionPackage.split(Pattern.quote("/"));
         String originalOrg = splitInfo[0];
@@ -122,10 +123,12 @@ public class FunctionMock {
                 orgName = projectInfo[0];
                 packageName = projectInfo[1];
                 version = projectInfo[2];
+                System.out.println("PROJECT-INFO "+ orgName + " "+ packageName+ " "+ version);
                 className = "tests." + getMockClassName(orgName, packageName, version, originalFunction,
                         originalClassName, mockFunctionName, mockFunctionClasses, getClassLoader());
                 className = getQualifiedClassName(orgName, packageName, version, className);
             } catch (ClassNotFoundException e) {
+                System.out.println("CLASS NOT FOUND" + e.getMessage());
                 return ErrorCreator.createError(
                         MockConstants.TEST_PACKAGE_ID,
                         MockConstants.FUNCTION_CALL_ERROR,
@@ -151,7 +154,9 @@ public class FunctionMock {
             throws ClassNotFoundException {
         Method mockMethod = getMockMethod(orgName, packageName, version, mockMethodName, mockFunctionClasses,
                 classLoader);
+        System.out.println("MOCK-METHOD NAME "+mockMethod.getName());
         Method originalMethod = getClassDeclaredMethod(originalPackageName, originalMethodName, classLoader);
+        System.out.println("ORIGINAL-METHOD NAME "+originalMethod.getName());
 
         validateFunctionSignature(mockMethod, originalMethod, mockMethodName);
         return  mockMethod.getDeclaringClass().getSimpleName();

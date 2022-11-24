@@ -404,7 +404,7 @@ public class RunNativeImageTestTask implements Task {
         // Only tests in packages are executed so default packages i.e. single bal files which has the package name
         // as "." are ignored. This is to be consistent with the "bal test" command which only executes tests
         // in packages.
-        Map<String, String> functionMockModuleMapping = new HashMap<>();
+        Map<String, String> originalVsModifiedJarMap = new HashMap<>();
         for (ModuleDescriptor moduleDescriptor :
                 project.currentPackage().moduleDependencyGraph().toTopologicallySortedList()) {
             Module module = project.currentPackage().module(moduleDescriptor.name());
@@ -430,7 +430,7 @@ public class RunNativeImageTestTask implements Task {
             suite.setReportRequired(report || coverage);
             try {
                 modifyJarForFunctionMock(suite, target, module,
-                       functionMockModuleMapping);
+                       originalVsModifiedJarMap);
             } catch (IOException e) {
                 throw createLauncherException("error occurred while running tests", e);
             }
@@ -463,7 +463,7 @@ public class RunNativeImageTestTask implements Task {
             int testResult = 1;
             try {
                 testResult = runTestSuiteWithNativeImage(project.currentPackage(), jBallerinaBackend, target,
-                        functionMockModuleMapping);
+                        originalVsModifiedJarMap);
 
                 if (report || coverage) {
                     for (String moduleName : moduleNamesList) {
@@ -531,14 +531,14 @@ public class RunNativeImageTestTask implements Task {
 //    }
 
     private int runTestSuiteWithNativeImage(Package currentPackage, JBallerinaBackend jBallerinaBackend, Target target,
-                                            Map<String, String> functionMockModuleMappings)
+                                            Map<String, String> originalVsModifiedJarMap)
             throws IOException, InterruptedException {
         String packageName = currentPackage.packageName().toString();
         String classPath = getClassPath(jBallerinaBackend, currentPackage);
         String modClassPath;
-        for (Map.Entry<String, String> functionMockModuleMapping : functionMockModuleMappings.entrySet()) {
+        for (Map.Entry<String, String> functionMockModuleMapping : originalVsModifiedJarMap.entrySet()) {
             String moduleJar = functionMockModuleMapping.getKey();
-            String replacedJar = functionMockModuleMappings.get(moduleJar);
+            String replacedJar = originalVsModifiedJarMap.get(moduleJar);
             modClassPath = classPath.replace(moduleJar, replacedJar);
             classPath = modClassPath;
 
@@ -679,47 +679,124 @@ public class RunNativeImageTestTask implements Task {
     }
 
     private void modifyJarForFunctionMock(TestSuite testSuite, Target target, Module module,
-                                          Map<String, String> functionMockModuleMapping) throws IOException {
+                                          Map<String, String> originalVsModifiedJarMap) throws IOException {
         String moduleName = module.moduleName().toString();
-        String mainJarName = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN +
-                testSuite.getVersion() + JAR_EXTENSION;
         String testJarName = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN +
                 testSuite.getVersion() + HYPHEN + TESTABLE + JAR_EXTENSION;
-        String modifiedJar = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN + testSuite.getVersion() + HYPHEN +
-                MODIFIED + JAR_EXTENSION;
+        String testJarPath = "";
+        String modifiedJarName = "";
+        String mainJarPath = "";
+        String mainJarName = "";
+
         if (testSuite.getMockFunctionNamesMap().isEmpty()) {
             return;
         }
-        functionMockModuleMapping.put(mainJarName, modifiedJar);
+
         List<String> testExecutionDependencies = testSuite.getTestExecutionDependencies();
-
-
-        List<String> mockFunctionDependencies = new ArrayList<>();
         for (String testExecutionDependency : testExecutionDependencies) {
-            if (testExecutionDependency.endsWith(mainJarName) || testExecutionDependency.endsWith(testJarName)) {
-                mockFunctionDependencies.add(testExecutionDependency);
+            if (testExecutionDependency.endsWith(testJarName)) {
+                testJarPath = testExecutionDependency;
             }
-        }
-        ClassLoader classLoader = AccessController.doPrivileged(
-                (PrivilegedAction<URLClassLoader>) () -> new URLClassLoader(getURLList(mockFunctionDependencies).
-                        toArray(new URL[0]), ClassLoader.getSystemClassLoader()));
 
+        }
+
+        ClassLoader classLoader = AccessController.doPrivileged(
+                (PrivilegedAction<URLClassLoader>) () -> new URLClassLoader(getURLList(testExecutionDependencies).
+                        toArray(new URL[0]), ClassLoader.getSystemClassLoader()));
 
         Map<String, List<String>> classVsMockFunctionsMap = new HashMap<>();
         Map<String, String> mockFunctionMap = testSuite.getMockFunctionNamesMap();
         populateClassNameVsFunctionToMockMap(classVsMockFunctionsMap, mockFunctionMap);
-        Map<String, byte[]> modifiedClassDef = new HashMap<>();
-        for (Map.Entry<String, List<String>> entry : classVsMockFunctionsMap.entrySet()) {
-            String className = entry.getKey();
-            List<String> functionNamesList = entry.getValue();
-            byte[] classFile = getModifiedClassBytes(className, functionNamesList, testSuite, classLoader);
-            modifiedClassDef.put(className, classFile);
+
+        Map <String, List<String>> mainJarVsClassMapping = new HashMap<>();
+        for (Map.Entry<String, List<String>> classVsMockFunctionsEntry : classVsMockFunctionsMap.entrySet()) {
+            String className = classVsMockFunctionsEntry.getKey();
+            String[] classMetaData = className.split("\\.");
+            mainJarName = classMetaData[0] + HYPHEN + classMetaData[1].replace("$0046",".") +
+                    HYPHEN + classMetaData[2];
+
+            if (mainJarVsClassMapping.containsKey(mainJarName)) {
+                mainJarVsClassMapping.get(mainJarName).add(className);
+            } else {
+                List<String> classList = new ArrayList<>();
+                classList.add(className);
+                mainJarVsClassMapping.put(mainJarName,classList);
+            }
         }
-        Map<String, byte[]> unmodifiedFiles = loadUnmodifiedFilesWithinJar(mockFunctionDependencies, mainJarName);
-        String modifiedJarPath = (target.path().resolve(CACHE_DIR).resolve(testSuite.getOrgName()).resolve
-                (testSuite.getPackageName()).resolve(testSuite.getVersion()).resolve(JAVA_11_DIR)).toString()
-                 + PATH_SEPARATOR + modifiedJar;
-        dumpJar(modifiedClassDef, unmodifiedFiles, modifiedJarPath);
+
+        for (Map.Entry<String, List<String>> mainJarVsClassEntry : mainJarVsClassMapping.entrySet()) {
+
+            mainJarName = mainJarVsClassEntry.getKey();
+            modifiedJarName = mainJarName + HYPHEN + MODIFIED + JAR_EXTENSION;
+
+
+            for (String testExecutionDependency : testExecutionDependencies) {
+                if (testExecutionDependency.contains(mainJarName) && !testExecutionDependency.contains(TESTABLE)) {
+                    mainJarPath = testExecutionDependency;
+                    if (originalVsModifiedJarMap.containsKey(mainJarPath)) {
+                        mainJarPath= originalVsModifiedJarMap.get(mainJarPath);
+                    }
+                }
+            }
+
+
+            Map<String, byte[]> modifiedClassDef = new HashMap<>();
+            for (String className : mainJarVsClassEntry.getValue()) {
+                List<String> functionNamesList = classVsMockFunctionsMap.get(className);
+                byte[] classFile = getModifiedClassBytes(className, functionNamesList, testSuite, classLoader);
+                modifiedClassDef.put(className, classFile);
+            }
+
+            Map<String, byte[]> unmodifiedFiles = loadUnmodifiedFilesWithinJar(mainJarPath);
+            String modifiedJarPath = (target.path().resolve(CACHE_DIR).resolve(testSuite.getOrgName()).resolve
+                    (testSuite.getPackageName()).resolve(testSuite.getVersion()).resolve(JAVA_11_DIR)).toString()
+                    + PATH_SEPARATOR + modifiedJarName;
+            dumpJar(modifiedClassDef, unmodifiedFiles, modifiedJarPath);
+            if (!originalVsModifiedJarMap.containsKey(mainJarPath)) {
+                originalVsModifiedJarMap.put(mainJarPath, modifiedJarPath);
+            }
+        }
+
+//
+//        String mainJarName = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN +
+//                testSuite.getVersion() + JAR_EXTENSION;
+//        String testJarName = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN +
+//                testSuite.getVersion() + HYPHEN + TESTABLE + JAR_EXTENSION;
+//        String modifiedJar = testSuite.getOrgName() + HYPHEN + moduleName + HYPHEN + testSuite.getVersion() + HYPHEN +
+//                MODIFIED + JAR_EXTENSION;
+//        if (testSuite.getMockFunctionNamesMap().isEmpty()) {
+//            return;
+//        }
+//        functionMockModuleMapping.put(mainJarName, modifiedJar);
+//        List<String> testExecutionDependencies = testSuite.getTestExecutionDependencies();
+//
+//
+//        List<String> mockFunctionDependencies = new ArrayList<>();
+//        for (String testExecutionDependency : testExecutionDependencies) {
+//            if (testExecutionDependency.endsWith(mainJarName) || testExecutionDependency.endsWith(testJarName)) {
+//                mockFunctionDependencies.add(testExecutionDependency);
+//            }
+//        }
+//        ClassLoader classLoader = AccessController.doPrivileged(
+//                (PrivilegedAction<URLClassLoader>) () -> new URLClassLoader(getURLList(mockFunctionDependencies).
+//                        toArray(new URL[0]), ClassLoader.getSystemClassLoader()));
+//
+//
+//        Map<String, List<String>> classVsMockFunctionsMap = new HashMap<>();
+//        Map<String, String> mockFunctionMap = testSuite.getMockFunctionNamesMap();
+//        populateClassNameVsFunctionToMockMap(classVsMockFunctionsMap, mockFunctionMap);
+//        Map<String, byte[]> modifiedClassDef = new HashMap<>();
+//        for (Map.Entry<String, List<String>> entry : classVsMockFunctionsMap.entrySet()) {
+//            String className = entry.getKey();
+//            List<String> functionNamesList = entry.getValue();
+//            byte[] classFile = getModifiedClassBytes(className, functionNamesList, testSuite, classLoader);
+//            modifiedClassDef.put(className, classFile);
+//        }
+//        Map<String, byte[]> unmodifiedFiles = loadUnmodifiedFilesWithinJar(mockFunctionDependencies, mainJarName);
+//        String modifiedJarPath = (target.path().resolve(CACHE_DIR).resolve(testSuite.getOrgName()).resolve
+//                (testSuite.getPackageName()).resolve(testSuite.getVersion()).resolve(JAVA_11_DIR)).toString()
+//                 + PATH_SEPARATOR + modifiedJar;
+//        dumpJar(modifiedClassDef, unmodifiedFiles, modifiedJarPath);
 
 
         //Modify testable jar for function mocking
@@ -746,12 +823,12 @@ public class RunNativeImageTestTask implements Task {
                 modifiedTestClassDef.put(testDocumentClassName, classFile);
             }
         }
-        Map<String, byte[]> unmodifiedTestFiles = loadUnmodifiedFilesWithinJar(mockFunctionDependencies, testJarName);
-        String modifiedTestJarPath = (target.path().resolve(CACHE_DIR).resolve(testSuite.getOrgName()).resolve
-                (testSuite.getPackageName()).resolve(testSuite.getVersion()).resolve(JAVA_11_DIR)).toString()
-                + PATH_SEPARATOR + testJarName;
+        Map<String, byte[]> unmodifiedTestFiles = loadUnmodifiedFilesWithinJar(testJarPath);
+        String modifiedTestJarPath = testJarPath.replace(JAR_EXTENSION, HYPHEN + MODIFIED + JAR_EXTENSION);
         dumpJar(modifiedTestClassDef, unmodifiedTestFiles, modifiedTestJarPath);
-
+        if (!originalVsModifiedJarMap.containsKey(testJarPath)) {
+            originalVsModifiedJarMap.put(testJarPath, modifiedTestJarPath);
+        }
     }
 
     private void dumpJar(Map<String, byte[]> modifiedClassDefs, Map<String, byte[]> unmodifiedFiles,
@@ -781,15 +858,9 @@ public class RunNativeImageTestTask implements Task {
 
     }
 
-    private Map<String, byte[]> loadUnmodifiedFilesWithinJar(List<String> codeGeneratedJarPaths, String mainJarName)
+    private Map<String, byte[]> loadUnmodifiedFilesWithinJar(String mainJarPath)
             throws IOException {
-        String mainJarPath = null;
         Map<String, byte[]> unmodifiedFiles = new HashMap<String, byte[]>();
-        for (String codeGeneratedJarPath : codeGeneratedJarPaths) {
-            if (codeGeneratedJarPath.endsWith(mainJarName)) {
-                mainJarPath = codeGeneratedJarPath;
-            }
-        }
         File jarFile = new File(mainJarPath);
         ZipInputStream jarInputStream = new ZipInputStream(new FileInputStream(jarFile));
         ZipEntry entry;
