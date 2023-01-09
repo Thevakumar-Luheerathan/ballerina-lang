@@ -507,9 +507,10 @@ public class RunNativeImageTestTask implements Task {
 
         ProcessBuilder builder = new ProcessBuilder();
         builder.command(cmdArgs.toArray(new String[0]));
+        builder.inheritIO();
         Process process = builder.start();
-        IOUtils.copy(process.getInputStream(), out);
-        IOUtils.copy(process.getErrorStream(), err);
+//        IOUtils.copy(process.getInputStream(), out);
+//        IOUtils.copy(process.getErrorStream(), err);
 
         if (process.waitFor() == 0) {
             cmdArgs = new ArrayList<>();
@@ -529,9 +530,10 @@ public class RunNativeImageTestTask implements Task {
             cmdArgs.add(Boolean.toString(listGroups));                              // 8
 
             builder.command(cmdArgs.toArray(new String[0]));
+            builder.inheritIO();
             process = builder.start();
-            IOUtils.copy(process.getInputStream(), out);
-            IOUtils.copy(process.getErrorStream(), err);
+//            IOUtils.copy(process.getInputStream(), out);
+//            IOUtils.copy(process.getErrorStream(), err);
             return process.waitFor();
         } else {
             return 1;
