@@ -514,6 +514,7 @@ public class RunNativeImageTestTask implements Task {
         // native-image configs
         nativeArgs.add("-H:ReflectionConfigurationFiles=" + nativeConfigPath.resolve("reflect-config.json"));
         nativeArgs.add("--no-fallback");
+        nativeArgs.add("--install-exit-handlers");
 
         try (FileWriter nativeArgumentWriter = new FileWriter(nativeConfigPath.resolve("native-image-args.txt")
                 .toString(), Charset.defaultCharset())) {
