@@ -594,6 +594,7 @@ public class BMainInstance implements BMain {
             addJavaAgents(envProperties);
             Map<String, String> env = processBuilder.environment();
             env.putAll(envProperties);
+            env.put("GRAALVM_HOME", "/Library/Java/JavaVirtualMachines/graalvm-ce-java11-22.3.0/Contents/Home");
 
             Process process = processBuilder.start();
 
@@ -610,6 +611,7 @@ public class BMainInstance implements BMain {
             }
 
             process.waitFor();
+            System.out.println(output);
             return output;
         } catch (IOException e) {
             throw new BallerinaTestException("Error executing ballerina", e);

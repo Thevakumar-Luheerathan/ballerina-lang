@@ -121,7 +121,7 @@ public class GroupingTest extends BaseTestCase {
     @Test
     public void testListingOfTestGroups() throws BallerinaTestException {
         String msg = "[g1, g2, g3, g4, g5, g6]";
-        String[] args = {"--list-groups"};
+        String[] args = {"--native","--list-groups"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(),
                 projectBasedTestsPath.resolve("group-test").toString(),
