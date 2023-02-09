@@ -67,7 +67,7 @@ public class BMainInstance implements BMain {
 
     private void configureAgentArgs() throws BallerinaTestException {
         // add jacoco agent
-        String jacocoArgLine = "-javaagent:" + Paths.get(balServer.getServerHome())
+        String jacocoArgLine = "-javaagent:" + Paths.get("/Library/Ballerina/distributions/ballerina-2201.4.0")
                 .resolve("bre").resolve("lib").resolve("jacocoagent.jar").toString() + "=destfile=" +
                 Paths.get(System.getProperty("user.dir"))
                         .resolve("build").resolve("jacoco").resolve("test.exec");
@@ -121,8 +121,8 @@ public class BMainInstance implements BMain {
         }
         addJavaAgents(envProperties);
 
-        runMain("build", new String[]{balFile}, envProperties, null, leechers, balServer.getServerHome());
-        runJar(balFile, ArrayUtils.addAll(flags, args), envProperties, clientArgs, leechers, balServer.getServerHome());
+        runMain("build", new String[]{balFile}, envProperties, null, leechers, "/Library/Ballerina");
+        runJar(balFile, ArrayUtils.addAll(flags, args), envProperties, clientArgs, leechers, "/Library/Ballerina");
     }
 
     @Override
@@ -213,15 +213,16 @@ public class BMainInstance implements BMain {
         try {
 
             if (Utils.getOSName().toLowerCase(Locale.ENGLISH).contains("windows")) {
-                cmdArray = new String[]{"cmd.exe", "/c", balServer.getServerHome() +
+                cmdArray = new String[]{"cmd.exe", "/c", "/Library/Ballerina" +
                         File.separator + "bin" + File.separator + scriptName + ".bat", command};
             } else {
-                cmdArray = new String[]{"bash", balServer.getServerHome() +
+                cmdArray = new String[]{"bash", "/Library/Ballerina" +
                         File.separator + "bin/" + scriptName, command};
             }
 
             String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args)).toArray(String[]::new);
             ProcessBuilder processBuilder = new ProcessBuilder(cmdArgs).directory(new File(commandDir));
+            System.out.println(String.join(" ",cmdArgs));
             if (envProperties != null) {
                 Map<String, String> env = processBuilder.environment();
                 for (Map.Entry<String, String> entry : envProperties.entrySet()) {
@@ -293,15 +294,16 @@ public class BMainInstance implements BMain {
 
         try {
             if (Utils.getOSName().toLowerCase(Locale.ENGLISH).contains("windows")) {
-                cmdArray = new String[]{"cmd.exe", "/c", balServer.getServerHome() +
+                cmdArray = new String[]{"cmd.exe", "/c", "/Library/Ballerina" +
                         File.separator + "bin" + File.separator + scriptName + ".bat", command};
             } else {
-                cmdArray = new String[]{"bash", balServer.getServerHome() +
+                cmdArray = new String[]{"bash", "/Library/Ballerina" +
                         File.separator + "bin/" + scriptName, command};
             }
 
             cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args)).toArray(String[]::new);
             ProcessBuilder processBuilder = new ProcessBuilder(cmdArgs).directory(new File(commandDir));
+            System.out.println(String.join(" ",cmdArgs));
             if (envProperties != null) {
                 Map<String, String> env = processBuilder.environment();
                 for (Map.Entry<String, String> entry : envProperties.entrySet()) {
@@ -508,6 +510,7 @@ public class BMainInstance implements BMain {
             runCmdSet.addAll(Arrays.asList(args));
 
             ProcessBuilder processBuilder = new ProcessBuilder(runCmdSet).directory(new File(commandDir));
+            System.out.println(String.join(" ",runCmdSet));
             Map<String, String> env = processBuilder.environment();
             for (Map.Entry<String, String> entry : envProperties.entrySet()) {
                 env.put(entry.getKey(), entry.getValue());
@@ -578,15 +581,16 @@ public class BMainInstance implements BMain {
         try {
 
             if (Utils.getOSName().toLowerCase(Locale.ENGLISH).contains("windows")) {
-                cmdArray = new String[]{"cmd.exe", "/c", balServer.getServerHome() +
+                cmdArray = new String[]{"cmd.exe", "/c", "/Library/Ballerina" +
                         File.separator + "bin" + File.separator + scriptName + ".bat", command};
             } else {
-                cmdArray = new String[]{"bash", balServer.getServerHome() +
+                cmdArray = new String[]{"bash", "/Library/Ballerina" +
                         File.separator + "bin/" + scriptName, command};
             }
 
             String[] cmdArgs = Stream.concat(Arrays.stream(cmdArray), Arrays.stream(args)).toArray(String[]::new);
             ProcessBuilder processBuilder = new ProcessBuilder(cmdArgs).directory(new File(commandDir));
+            System.out.println(String.join(" ",cmdArgs));
             addJavaAgents(envProperties);
             Map<String, String> env = processBuilder.environment();
             env.putAll(envProperties);

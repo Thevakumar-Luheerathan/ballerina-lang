@@ -49,6 +49,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion failure");
     }
 
@@ -57,6 +58,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions-diff-error"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion diff message failure in test framework");
     }
 
@@ -65,6 +67,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions-error-messages"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion diff message failure");
     }
 
@@ -73,6 +76,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions-behavioral-types"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion failure for behavioral data types");
     }
 
@@ -81,6 +85,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions-structural-types"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion failure for structural data types");
     }
 
@@ -89,6 +94,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"assertions-sequence-types"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "assertion failure for sequence data types");
     }
 
@@ -97,6 +103,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"annotation-access"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "test annotation access failure");
     }
 
@@ -105,6 +112,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"interops"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "interops failure");
     }
 
@@ -113,6 +121,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"runtime-api-tests"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "runtime api failure");
     }
 
@@ -121,6 +130,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"before-after"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "before-after annotation attribute failure");
     }
 
@@ -129,6 +139,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"before-each-after-each"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "before-each-after-each annotation attribute failure");
     }
 
@@ -137,6 +148,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"depends-on"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "depends-on annotation attribute failure");
     }
 
@@ -145,6 +157,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"annotations"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "annotations failure");
     }
 
@@ -153,6 +166,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"isolated-functions"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "isolated functions failure");
     }
 
@@ -161,6 +175,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"intersection-type-test"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "intersection type failure");
     }
 
@@ -169,6 +184,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"anydata-type-test"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "anydata type failure");
     }
 
@@ -177,6 +193,7 @@ public class BasicCasesTest extends BaseTestCase {
         String[] args = mergeCoverageArgs(new String[]{"async"});
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
+        System.out.println(output);
         AssertionUtils.assertForTestFailures(output, "async invocation failure");
     }
 }

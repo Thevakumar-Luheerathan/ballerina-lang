@@ -42,7 +42,7 @@ public class BaseTestCase {
     Path tempProjectDirectory;
     protected static Path singleFileTestsPath;
     protected static Path projectBasedTestsPath;
-    String[] coverageArgs = new String[]{"--code-coverage", "--includes=*"};
+    String[] coverageArgs = new String[]{"--native","--code-coverage", "--includes=*"};
 
     @BeforeSuite(alwaysRun = true)
     public void initialize() throws BallerinaTestException, IOException {
