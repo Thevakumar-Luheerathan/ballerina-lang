@@ -48,7 +48,7 @@ public class ModuleExecutionTest extends BaseTestCase {
     @Test()
     public void test_DefaultModule_AllTests() throws BallerinaTestException {
         String output = balClient.runMainAndReadStdOut("test",
-                new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution:*"},
+                new String[]{"--native", "--code-coverage", "--includes=*", "--tests", "moduleExecution:*"},
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertForTestFailures(output, "default module test failure");
     }
@@ -57,7 +57,7 @@ public class ModuleExecutionTest extends BaseTestCase {
     public void test_DefaultModule_SingleTest() throws BallerinaTestException {
         String msg1 = "1 passing";
         String msg2 = "[pass] main_test1";
-        String[] args = new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution:main_test1"};
+        String[] args = new String[]{"--native","--code-coverage", "--includes=*", "--tests", "moduleExecution:main_test1"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, false);
         if (!output.contains(msg1) || !output.contains(msg2)) {
@@ -69,7 +69,7 @@ public class ModuleExecutionTest extends BaseTestCase {
     public void test_DefaultModule_StartWildCardTest() throws BallerinaTestException {
         String msg1 = "1 passing";
         String msg2 = "[pass] commonTest";
-        String[] args = new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution:*Test"};
+        String[] args = new String[]{"--native","--code-coverage", "--includes=*", "--tests", "moduleExecution:*Test"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, false);
         if (!output.contains(msg1) || !output.contains(msg2)) {
@@ -83,7 +83,7 @@ public class ModuleExecutionTest extends BaseTestCase {
         String msg2 = "[pass] main_test1";
         String msg3 = "[pass] main_test2";
         String msg4 = "[pass] main_test3";
-        String[] args = new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution:*test*"};
+        String[] args = new String[]{"--native","--code-coverage", "--includes=*", "--tests", "moduleExecution:*test*"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, false);
         if (!output.contains(msg1) || !output.contains(msg2) || !output.contains(msg3) || !output.contains(msg4)) {
@@ -97,7 +97,7 @@ public class ModuleExecutionTest extends BaseTestCase {
         String msg2 = "[pass] main_test1";
         String msg3 = "[pass] main_test2";
         String msg4 = "[pass] main_test3";
-        String[] args = new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution:main_*"};
+        String[] args = new String[]{"--native","--code-coverage", "--includes=*", "--tests", "moduleExecution:main_*"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, false);
         if (!output.contains(msg1) || !output.contains(msg2) || !output.contains(msg3) || !output.contains(msg4)) {
@@ -108,7 +108,7 @@ public class ModuleExecutionTest extends BaseTestCase {
     @Test()
     public void test_Module1_AllTests() throws BallerinaTestException {
         String output = balClient.runMainAndReadStdOut("test",
-                new String[]{"--code-coverage", "--includes=*", "--tests", "moduleExecution.Module1:*"},
+                new String[]{"--native","--code-coverage", "--includes=*", "--tests", "moduleExecution.Module1:*"},
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertForTestFailures(output, "module wise test failure");
     }
@@ -117,7 +117,7 @@ public class ModuleExecutionTest extends BaseTestCase {
     public void test_Module1_SingleTest() throws BallerinaTestException {
         String msg1 = "1 passing";
         String msg2 = "[pass] module1_test1";
-        String[] args = new String[]{"--code-coverage", "--includes=*", "--tests",
+        String[] args = new String[]{"--native","--code-coverage", "--includes=*", "--tests",
                 "moduleExecution.Module1:module1_test1"};
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, false);

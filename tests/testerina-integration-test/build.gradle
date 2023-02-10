@@ -50,9 +50,9 @@ task testUtilsJar(type: Jar) {
 
 // Integration tests for testerina
 test {
-    mustRunAfter ':jballerina-integration-test:test'
-    dependsOn extractDistribution
-    dependsOn testUtilsJar
+//    mustRunAfter ':jballerina-integration-test:test'
+//    dependsOn extractDistribution
+//    dependsOn testUtilsJar
     systemProperty 'enableTesterinaTests', 'true'
 
     maxParallelForks = 1
