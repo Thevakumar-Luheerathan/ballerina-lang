@@ -64,5 +64,6 @@ test {
 
     useTestNG() {
         suites 'src/test/resources/testng.xml'
+        systemProperty 'balNativeTest', System.getProperty('balNativeTest', 'false')
     }
 }

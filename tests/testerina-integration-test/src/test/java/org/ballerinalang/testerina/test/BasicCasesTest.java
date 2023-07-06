@@ -48,6 +48,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertions() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertions.txt", output);
@@ -56,6 +57,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertDiffError() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions-diff-error"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertDiffError.txt", output);
@@ -64,6 +66,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertionErrorMessage() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions-error-messages"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertionErrorMessage.txt", output);
@@ -72,6 +75,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertBehavioralTypes() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions-behavioral-types"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertBehavioralTypes.txt", output);
@@ -80,6 +84,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertStructuralTypes() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions-structural-types"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertStructuralTypes.txt", output);
@@ -88,6 +93,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAssertSequenceTypes() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"assertions-sequence-types"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAssertSequenceTypes.txt", output);
@@ -100,6 +106,7 @@ public class BasicCasesTest extends BaseTestCase {
         String endString2 = "********";
         String firstString2 = "unnamed module of loader 'app')";
         String[] args = mergeCoverageArgs(new String[]{"annotation-access"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         output = output + "********";
@@ -111,6 +118,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testJavaInterops() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"interops"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testJavaInterops.txt", output);
@@ -119,6 +127,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testRuntimeApi() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"runtime-api-tests"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testRuntimeApi.txt", output);
@@ -127,6 +136,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testBeforeAfter() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"before-after"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testBeforeAfter.txt", output);
@@ -135,6 +145,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testBeforeEachAfterEach() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"before-each-after-each"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testBeforeEachAfterEach.txt", output);
@@ -143,6 +154,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test(dependsOnMethods = "testBeforeAfter")
     public void testDependsOn() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"depends-on"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testDependsOn.txt", output);
@@ -151,6 +163,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test(dependsOnMethods = "testDependsOn")
     public void testAnnotations() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"annotations"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAnnotations.txt", output);
@@ -159,6 +172,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testIsolatedFunctions() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"isolated-functions"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testIsolatedFunctions.txt", output);
@@ -167,6 +181,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testIntersectionTypes() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"intersection-type-test"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testIntersectionTypes.txt", output);
@@ -175,6 +190,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAnydataType() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"anydata-type-test"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAnydataType.txt", output);
@@ -183,6 +199,7 @@ public class BasicCasesTest extends BaseTestCase {
     @Test
     public void testAsyncInvocation() throws BallerinaTestException, IOException {
         String[] args = mergeCoverageArgs(new String[]{"async"});
+        args = mergeNativeArgIfGiven(args);
         String output = balClient.runMainAndReadStdOut("test", args,
                 new HashMap<>(), projectPath, true);
         AssertionUtils.assertOutput("BasicCasesTest-testAsyncInvocation.txt", output);

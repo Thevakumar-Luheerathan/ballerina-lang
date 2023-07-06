@@ -88,4 +88,13 @@ public class BaseTestCase {
     protected String[] mergeCoverageArgs(String[] cmdArgs) {
         return Stream.concat(Arrays.stream(coverageArgs), Arrays.stream(cmdArgs)).toArray(String[]::new);
     }
+
+    protected String[] mergeNativeArgIfGiven(String[] cmdArgs) {
+        boolean balNativeTest = Boolean.parseBoolean(System.getProperty("balNativeTest", "false"));
+        if (balNativeTest) {
+            return Stream.concat(Arrays.stream(new String[]{"--graalvm"}),
+                    Arrays.stream(cmdArgs)).toArray(String[]::new);
+        }
+        return cmdArgs;
+    }
 }

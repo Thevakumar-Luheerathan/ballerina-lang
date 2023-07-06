@@ -46,4 +46,17 @@ public class CommonUtils {
         }
         return modifiedContent;
     }
+
+    public static String replaceNativeBuildLog(String content) {
+        boolean balNativeTest = Boolean.parseBoolean(System.getProperty("balNativeTest", "false"));
+            String firstString = "===================================================================" +
+                    "=====================================================";
+            String endString = "Running Tests";
+            int firstPos = content.indexOf(firstString);
+        if (balNativeTest && firstPos >= 0) {
+            int lastPos = content.indexOf(endString, firstPos);
+            return content.substring(0, firstPos)  + content.substring(lastPos);
+        }
+        return content;
+    }
 }

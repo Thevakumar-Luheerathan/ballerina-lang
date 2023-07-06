@@ -1,0 +1,22 @@
+WARNING: Code coverage generation is not supported with Ballerina native test
+Compiling source
+	testorg/runtime_api:1.0.0
+************************************************************
+* WARNING: Package is not verified with GraalVM.           *
+************************************************************
+
+The GraalVM compatibility property has not been defined for the package 'runtime_api'. This could potentially lead to compatibility issues with GraalVM.
+
+To resolve this warning, please ensure that all Java dependencies of this package are compatible with GraalVM. Subsequently, update the Ballerina.toml file under the section '[platform.java11]' with the attribute 'graalvmCompatible = true'.
+
+************************************************************
+
+Running Tests with Coverage
+
+	runtime_api
+		[pass] testRuntimeApi
+
+
+		1 passing
+		0 failing
+		0 skipped

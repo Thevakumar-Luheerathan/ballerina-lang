@@ -33,6 +33,7 @@ import java.util.Locale;
 public class AssertionUtils {
     private static final Boolean isWindows = System.getProperty("os.name").toLowerCase(Locale.getDefault())
             .contains("win");
+    private static final boolean balNativeTest = Boolean.parseBoolean(System.getProperty("balNativeTest", "false"));
 
     private static final Path commandOutputsDir = Paths
             .get("src", "test", "resources", "command-outputs");
@@ -47,7 +48,16 @@ public class AssertionUtils {
     }
 
     public static void assertOutput(String outputFileName, String output) throws IOException {
-        if (isWindows) {
+        if (balNativeTest && !isWindows) {
+            String modifiedOutput = CommonUtils.replaceNativeBuildLog(output);
+//            Files.writeString(commandOutputsDir.resolve("native-unix").resolve(outputFileName), modifiedOutput);
+            String fileContent = Files.readString(commandOutputsDir.resolve("native-unix").resolve(outputFileName));
+            Assert.assertEquals(modifiedOutput.stripTrailing(), fileContent.stripTrailing());
+        } else if (balNativeTest && isWindows) {
+            String modifiedOutput = CommonUtils.replaceNativeBuildLog(output);
+            String fileContent = Files.readString(commandOutputsDir.resolve("native-win").resolve(outputFileName));
+            Assert.assertEquals(modifiedOutput.replaceAll("\r\n|\r", "\n"), fileContent.replaceAll("\r\n|\r", "\n"));
+        } else if (isWindows) {
             String fileContent =  Files.readString(commandOutputsDir.resolve("windows").resolve(outputFileName));
             Assert.assertEquals(output.replaceAll("\r\n|\r", "\n"), fileContent.replaceAll("\r\n|\r", "\n"));
         } else {
