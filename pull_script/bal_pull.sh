@@ -21,7 +21,6 @@ USER_HOME="${CURRENT_DIR}/pull_home"
 
 # enable verbose mode
 export CENTRAL_VERBOSE_ENABLED=true
-export BALLERINA_DEV_CENTRAL=true
 
 mkdir -p "${CURRENT_DIR}/OLD_OP/${CLIENT_PREFIX}"
 mkdir -p "${CURRENT_DIR}/OLD_OP/${CLIENT_PREFIX}/http"
