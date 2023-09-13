@@ -18,7 +18,7 @@ on:
       output_folder_prefix:
         description: Prefix for the output folder
         required: true
-        default: "okhttp3_r0_c600"
+        default: "okhttp3_c30s_r60s"
 
 jobs:
   ubuntu_build:
@@ -75,6 +75,7 @@ jobs:
         run: |
           git config --global user.name 'Luheerathan Thevakumar'
           git config --global user.email 'Luhee27@gmail.com'
+          git pull origin prj_api_u35TimeOut
           git add pull_script/OLD_OP/*
           git commit -am "[Add output]"
           git push origin prj_api_u35TimeOut
