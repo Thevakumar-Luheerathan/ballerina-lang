@@ -1,0 +1,500 @@
+Current timestamp: 2023-09-13 08:00:02
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 08:01:03 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599263&Signature=c3pBnaQEOXGJQivZB4WCH2ZUQ2vRjg4JSFB2dVGqP5bI0UKwtIiJaOxroAoXTMMY3SB16rGRNuliwxdw0qBLudT99ZkPbNgX8fFs-q1ImpIQLaUAdSw6OfugoVm3FT~XBy9vHp8gJsflnNnWlKOgqUFKvbbg6Qwmo5hTFd1xppZaqkd8KS1NH0OfQR472GgPFzc7uxOu7EI8GEXV1m-rF5kQl7i~IPTeEFcBfsr75aNURIWWRvMrjVy4QgmMXmYlYkTXbSI-zbOWp85V7t4TEvaC4htkEljFeYKem-CYg2eE-VQbgOWu74pbiX~QbE73EY-Ltg6b7MuAfWC0tTNtfg__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694592063.121.2447.885902|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599263&Signature=c3pBnaQEOXGJQivZB4WCH2ZUQ2vRjg4JSFB2dVGqP5bI0UKwtIiJaOxroAoXTMMY3SB16rGRNuliwxdw0qBLudT99ZkPbNgX8fFs-q1ImpIQLaUAdSw6OfugoVm3FT~XBy9vHp8gJsflnNnWlKOgqUFKvbbg6Qwmo5hTFd1xppZaqkd8KS1NH0OfQR472GgPFzc7uxOu7EI8GEXV1m-rF5kQl7i~IPTeEFcBfsr75aNURIWWRvMrjVy4QgmMXmYlYkTXbSI-zbOWp85V7t4TEvaC4htkEljFeYKem-CYg2eE-VQbgOWu74pbiX~QbE73EY-Ltg6b7MuAfWC0tTNtfg__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599263&Signature=c3pBnaQEOXGJQivZB4WCH2ZUQ2vRjg4JSFB2dVGqP5bI0UKwtIiJaOxroAoXTMMY3SB16rGRNuliwxdw0qBLudT99ZkPbNgX8fFs-q1ImpIQLaUAdSw6OfugoVm3FT~XBy9vHp8gJsflnNnWlKOgqUFKvbbg6Qwmo5hTFd1xppZaqkd8KS1NH0OfQR472GgPFzc7uxOu7EI8GEXV1m-rF5kQl7i~IPTeEFcBfsr75aNURIWWRvMrjVy4QgmMXmYlYkTXbSI-zbOWp85V7t4TEvaC4htkEljFeYKem-CYg2eE-VQbgOWu74pbiX~QbE73EY-Ltg6b7MuAfWC0tTNtfg__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 7830
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 099189655b83d166e49fb0d4f2925b9c.cloudfront.net (CloudFront)
+> x-amz-cf-id: _Pho_MI_ni6nhMmVrf99t60g9I871HX_yD8kii6n7p6d9YH6XzCwBA==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    1% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]    9% [>         ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   12% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   14% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   17% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   19% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   22% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   25% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   28% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   34% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   40% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   44% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   47% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   49% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   52% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   55% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   57% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   60% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   63% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   67% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   70% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   74% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   77% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   80% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   83% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   87% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   90% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   93% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   96% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   99% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 08:12:07
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 08:13:07 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599987&Signature=SP2fwweP0hwsW~-iWbg0Ceo5RKJ72lInH015C~Gv8nZuG2ggjV1p1oCbXDsAGTqDmXyVWmwhX2vgHf88r3U8KnJy92BhPO7Y7v~FDB1Us1G-24CmUBNN851u5PeXOcIyZTSfVINru9gq0P5rOg2e~n3Lx80MyrIEzsweWpRWyaveRDbzGmEnFFu9o9aRrx5QLA4~znEjvmMaKTBce2LoffwA8KS8u6xj-atgGmEqftGJ2mMOkkxEkc1A6oL4l032k6vQhsdsSY4JGky6ZRl~9wJFl3L9k695DoFmj2FhBbq~Ihq5rpkq~HCK34Zz0uLMTVi2EYoDXK7kuyr~JkbrIQ__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694592787.865.2444.778039|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599987&Signature=SP2fwweP0hwsW~-iWbg0Ceo5RKJ72lInH015C~Gv8nZuG2ggjV1p1oCbXDsAGTqDmXyVWmwhX2vgHf88r3U8KnJy92BhPO7Y7v~FDB1Us1G-24CmUBNN851u5PeXOcIyZTSfVINru9gq0P5rOg2e~n3Lx80MyrIEzsweWpRWyaveRDbzGmEnFFu9o9aRrx5QLA4~znEjvmMaKTBce2LoffwA8KS8u6xj-atgGmEqftGJ2mMOkkxEkc1A6oL4l032k6vQhsdsSY4JGky6ZRl~9wJFl3L9k695DoFmj2FhBbq~Ihq5rpkq~HCK34Zz0uLMTVi2EYoDXK7kuyr~JkbrIQ__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694599987&Signature=SP2fwweP0hwsW~-iWbg0Ceo5RKJ72lInH015C~Gv8nZuG2ggjV1p1oCbXDsAGTqDmXyVWmwhX2vgHf88r3U8KnJy92BhPO7Y7v~FDB1Us1G-24CmUBNN851u5PeXOcIyZTSfVINru9gq0P5rOg2e~n3Lx80MyrIEzsweWpRWyaveRDbzGmEnFFu9o9aRrx5QLA4~znEjvmMaKTBce2LoffwA8KS8u6xj-atgGmEqftGJ2mMOkkxEkc1A6oL4l032k6vQhsdsSY4JGky6ZRl~9wJFl3L9k695DoFmj2FhBbq~Ihq5rpkq~HCK34Zz0uLMTVi2EYoDXK7kuyr~JkbrIQ__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 8555
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 1c4c65e5223e10e3b9e99a624fe0a8ec.cloudfront.net (CloudFront)
+> x-amz-cf-id: x2LzKYaG6tBWFD5_xCvkhPqWkK4PbOlKNNB0rq-RnlyXCpfjHdcDJw==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    4% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   10% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   16% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   25% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   28% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   35% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   40% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   43% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   46% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   49% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   51% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   55% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   58% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   61% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   65% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   68% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   71% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   75% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   78% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   81% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   84% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   87% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   91% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   94% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   97% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 08:24:12
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 08:25:14 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694600714&Signature=Z1IHsPVMauXxRnAJO84wfeydRHQrJhtbhtcjm3OI0jXatRgpCAGSzKddmyfCmnhFGkZs-7W5Zy3pJ9r2JVqnUGR9y-OfEsWcyefkauRCnBMcyNq015kW8q3o4QoVOJ5SIMXdcK3uuxRgSLzSm3AXbiCunpynXKvyJDZOrOxulXlW0XLVLvMLmIupbS2Lpnf3-drZseHk2vIHWhFjxE7NXvEknvPe3OKLSMYWLekzu3u7khhyYt23GlK~ygADsE3wul6Ljyx88jU19jbO72q7WTm-mGfEeMzNxBaC6undmF9j30sPVLpgkXlBupLuo4WUvdE7YhB9rhCzf54IH6LpQw__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694593514.794.2444.491297|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694600714&Signature=Z1IHsPVMauXxRnAJO84wfeydRHQrJhtbhtcjm3OI0jXatRgpCAGSzKddmyfCmnhFGkZs-7W5Zy3pJ9r2JVqnUGR9y-OfEsWcyefkauRCnBMcyNq015kW8q3o4QoVOJ5SIMXdcK3uuxRgSLzSm3AXbiCunpynXKvyJDZOrOxulXlW0XLVLvMLmIupbS2Lpnf3-drZseHk2vIHWhFjxE7NXvEknvPe3OKLSMYWLekzu3u7khhyYt23GlK~ygADsE3wul6Ljyx88jU19jbO72q7WTm-mGfEeMzNxBaC6undmF9j30sPVLpgkXlBupLuo4WUvdE7YhB9rhCzf54IH6LpQw__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694600714&Signature=Z1IHsPVMauXxRnAJO84wfeydRHQrJhtbhtcjm3OI0jXatRgpCAGSzKddmyfCmnhFGkZs-7W5Zy3pJ9r2JVqnUGR9y-OfEsWcyefkauRCnBMcyNq015kW8q3o4QoVOJ5SIMXdcK3uuxRgSLzSm3AXbiCunpynXKvyJDZOrOxulXlW0XLVLvMLmIupbS2Lpnf3-drZseHk2vIHWhFjxE7NXvEknvPe3OKLSMYWLekzu3u7khhyYt23GlK~ygADsE3wul6Ljyx88jU19jbO72q7WTm-mGfEeMzNxBaC6undmF9j30sPVLpgkXlBupLuo4WUvdE7YhB9rhCzf54IH6LpQw__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 12200
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:01:59 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 d640ec12547ee097cb75dd5bdc8787b8.cloudfront.net (CloudFront)
+> x-amz-cf-id: Sa6iMitSRuNPWBGZRfFQFHSaw6yjM18H9ttudTsAURQxDPLZi5OE8w==
+> x-amz-cf-pop: IAD61-P1
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    0% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   15% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   23% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   27% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   30% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   33% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   39% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   43% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   46% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   48% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   51% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   54% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   57% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   60% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   63% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   67% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   70% [=======>  ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   73% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   76% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   80% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   83% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   86% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   89% [========> ] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   92% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   96% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   99% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 08:36:17
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 08:37:16 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694601436&Signature=JAljYh10dNHTPHZDkOV0fCg2FL~fUhgXui50xlFlHRIn46g9zaL9Q1RxJ3SXjgnLlU6einjy2dmMXmArb~uYx8WhN6hHmXwiYT5wrvZ~-2ZTisPn7Fsh2mztTg81qFgAaRC~A9enpOW-bS1wfl-15-6dcltjk8tNF6ylNOYBSWeC4k8f6ZxRm5nCgqDPv9J-2X9U0l4NXyTS4W5aNQOAXs7Q-9L8DhOCYgj1imZSJhwqEKsmwyLpQ8jwJDeynky1UY3NCcWTB63xwPU1djDjlI-G6zctQ7qLQSUY0EkHMZj063OzXDW9qLDPmf8QWb8EfDdR9-ehWnMtXhhQPXEZMA__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694594236.22.2443.953803|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694601436&Signature=JAljYh10dNHTPHZDkOV0fCg2FL~fUhgXui50xlFlHRIn46g9zaL9Q1RxJ3SXjgnLlU6einjy2dmMXmArb~uYx8WhN6hHmXwiYT5wrvZ~-2ZTisPn7Fsh2mztTg81qFgAaRC~A9enpOW-bS1wfl-15-6dcltjk8tNF6ylNOYBSWeC4k8f6ZxRm5nCgqDPv9J-2X9U0l4NXyTS4W5aNQOAXs7Q-9L8DhOCYgj1imZSJhwqEKsmwyLpQ8jwJDeynky1UY3NCcWTB63xwPU1djDjlI-G6zctQ7qLQSUY0EkHMZj063OzXDW9qLDPmf8QWb8EfDdR9-ehWnMtXhhQPXEZMA__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694601436&Signature=JAljYh10dNHTPHZDkOV0fCg2FL~fUhgXui50xlFlHRIn46g9zaL9Q1RxJ3SXjgnLlU6einjy2dmMXmArb~uYx8WhN6hHmXwiYT5wrvZ~-2ZTisPn7Fsh2mztTg81qFgAaRC~A9enpOW-bS1wfl-15-6dcltjk8tNF6ylNOYBSWeC4k8f6ZxRm5nCgqDPv9J-2X9U0l4NXyTS4W5aNQOAXs7Q-9L8DhOCYgj1imZSJhwqEKsmwyLpQ8jwJDeynky1UY3NCcWTB63xwPU1djDjlI-G6zctQ7qLQSUY0EkHMZj063OzXDW9qLDPmf8QWb8EfDdR9-ehWnMtXhhQPXEZMA__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 10004
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 671f1f27279c7644e32ce35df9d281aa.cloudfront.net (CloudFront)
+> x-amz-cf-id: hxd_oY_PCEWeWCMSgPTh9_x1Y_yKKStBdu5P7Bz5c7pLsEHbc6UgOg==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    2% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   11% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   16% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   20% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   23% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   26% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   29% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   32% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   35% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   41% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   44% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   47% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   50% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   54% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   57% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   61% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   64% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   68% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   71% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   75% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   78% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   82% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   85% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   88% [========> ] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   91% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   94% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   97% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 08:48:22
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 08:49:24 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602164&Signature=VMO3QyJc8y3NjCaZ3Lln6-zi427NqnvJJnREfTGyos-~0QaT~to-hyq0pO0O~5zbLWA2cOuoROE11H2oApxaQiBh3j3L9To-ijiXHyCGCOEtEWfnYu3wGBjFE3EVOfmDZLeMMXyFDRyNdAPibyQeuYo7v5LR-M6Tsu6TuegFt~PeeeWmx9TnaGwIUHB3KmvoqY0bgTDe3tbtOqKz-I-afnyQPedQcEjQp-ZXn~Y1Kopd~VDsXEGLlGwCRKhe-QBkFIL6RDAp9O15VpbS9iUIV~bpjwvxqzoKK1xsOmkPrR7OgFQ65DcALPmIN-OdP2VLJAaMH7eouffXw4uQ8Zlg4Q__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694594964.283.2454.950583|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602164&Signature=VMO3QyJc8y3NjCaZ3Lln6-zi427NqnvJJnREfTGyos-~0QaT~to-hyq0pO0O~5zbLWA2cOuoROE11H2oApxaQiBh3j3L9To-ijiXHyCGCOEtEWfnYu3wGBjFE3EVOfmDZLeMMXyFDRyNdAPibyQeuYo7v5LR-M6Tsu6TuegFt~PeeeWmx9TnaGwIUHB3KmvoqY0bgTDe3tbtOqKz-I-afnyQPedQcEjQp-ZXn~Y1Kopd~VDsXEGLlGwCRKhe-QBkFIL6RDAp9O15VpbS9iUIV~bpjwvxqzoKK1xsOmkPrR7OgFQ65DcALPmIN-OdP2VLJAaMH7eouffXw4uQ8Zlg4Q__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602164&Signature=VMO3QyJc8y3NjCaZ3Lln6-zi427NqnvJJnREfTGyos-~0QaT~to-hyq0pO0O~5zbLWA2cOuoROE11H2oApxaQiBh3j3L9To-ijiXHyCGCOEtEWfnYu3wGBjFE3EVOfmDZLeMMXyFDRyNdAPibyQeuYo7v5LR-M6Tsu6TuegFt~PeeeWmx9TnaGwIUHB3KmvoqY0bgTDe3tbtOqKz-I-afnyQPedQcEjQp-ZXn~Y1Kopd~VDsXEGLlGwCRKhe-QBkFIL6RDAp9O15VpbS9iUIV~bpjwvxqzoKK1xsOmkPrR7OgFQ65DcALPmIN-OdP2VLJAaMH7eouffXw4uQ8Zlg4Q__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 10732
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 98a26a76cd909035ece99f3a1d211a2c.cloudfront.net (CloudFront)
+> x-amz-cf-id: hB60K7nA8sgkvY-s44xuzk-iZCmGPvwwVll1hWaf63trf4VvrBxb6w==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    3% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]    5% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]    7% [>         ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]    9% [>         ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   11% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   14% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   16% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   19% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   22% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   25% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   28% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   34% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   40% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   43% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   46% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   49% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   53% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   56% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   59% [=====>    ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   63% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   67% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   71% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   74% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   77% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   80% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   83% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   87% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   90% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   93% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   96% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   99% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 09:00:28
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 09:01:29 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602889&Signature=FGKJ0lLSGRfjyRokLqJuWrUChCjBrBsAJjbeqRMbr1NUwqu6Tca2S0NqBH~JqZQ--6g0szPCgk4Ex~t91S9RqSm-ePqy7W1zAY87Gr7yZPhXPokh6IWUkfyf85aBM-4Ba-BYD5ncT7PZZ-pMLFeaxguMbXWQDgJR3pynF~usjOa~3mEO38JlneR3x81KCxCFD7wZW05qbantsEl-k5eHqkqvNORSWyhenzAJwFrnmrp-58VFPCzhchMOA392RpqRpq2CgiPB359Zq7XolcL4sV~xK02n4GlNzlegaCDRfETfaeGCRFbHJdg7xp0cxkX-TjUg6ith2ej2X2F3OJDcJw__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694595689.582.2441.670535|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602889&Signature=FGKJ0lLSGRfjyRokLqJuWrUChCjBrBsAJjbeqRMbr1NUwqu6Tca2S0NqBH~JqZQ--6g0szPCgk4Ex~t91S9RqSm-ePqy7W1zAY87Gr7yZPhXPokh6IWUkfyf85aBM-4Ba-BYD5ncT7PZZ-pMLFeaxguMbXWQDgJR3pynF~usjOa~3mEO38JlneR3x81KCxCFD7wZW05qbantsEl-k5eHqkqvNORSWyhenzAJwFrnmrp-58VFPCzhchMOA392RpqRpq2CgiPB359Zq7XolcL4sV~xK02n4GlNzlegaCDRfETfaeGCRFbHJdg7xp0cxkX-TjUg6ith2ej2X2F3OJDcJw__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694602889&Signature=FGKJ0lLSGRfjyRokLqJuWrUChCjBrBsAJjbeqRMbr1NUwqu6Tca2S0NqBH~JqZQ--6g0szPCgk4Ex~t91S9RqSm-ePqy7W1zAY87Gr7yZPhXPokh6IWUkfyf85aBM-4Ba-BYD5ncT7PZZ-pMLFeaxguMbXWQDgJR3pynF~usjOa~3mEO38JlneR3x81KCxCFD7wZW05qbantsEl-k5eHqkqvNORSWyhenzAJwFrnmrp-58VFPCzhchMOA392RpqRpq2CgiPB359Zq7XolcL4sV~xK02n4GlNzlegaCDRfETfaeGCRFbHJdg7xp0cxkX-TjUg6ith2ej2X2F3OJDcJw__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 11457
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 ae8253630612e3347863de4af7a55446.cloudfront.net (CloudFront)
+> x-amz-cf-id: A2JRmD_-9uU5D5k9GB-8rZ7JzrkBWMEW3ebyaR_K1-_tilUzAZIMVQ==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    1% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   16% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   24% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   27% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   30% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   33% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   36% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   39% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   42% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   46% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   49% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   53% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   56% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   59% [=====>    ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   62% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   66% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   69% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   73% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   76% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   80% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   83% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   86% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   90% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   93% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   97% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 09:12:34
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 09:13:34 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694603614&Signature=qK-smRXGdXLdmPvbKvskjy1R16mqVdOCUIB6FZrWeAdkNbk-Zueaf1~q9AoaNAbXKKpccM~Z9IoMF2NNTmrWvKS3VBwKSr-w5he8z7R2r4ulOI9cODWLpl~ut4qbiTMv1vzbREwwbpMEnDgduja2cKuNbSoWnd9DIPDokTQdcCMCYptXDcMM0ZhI5aQBAoYy~vOfFnhox6ScUI0ii1m7m9F8zFEulat6tPzzh2b9m2JorpI1QbgQ3f6gZ7sZ~~731Z2D6pu3EVbjfHsdpJoAy2wcktgCQx1OobENqSnTGeD4T2IAYAVQQOsLbV42AQpw4wGTNCYAdSAqcc91Spxn-w__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694596415.001.2454.930762|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694603614&Signature=qK-smRXGdXLdmPvbKvskjy1R16mqVdOCUIB6FZrWeAdkNbk-Zueaf1~q9AoaNAbXKKpccM~Z9IoMF2NNTmrWvKS3VBwKSr-w5he8z7R2r4ulOI9cODWLpl~ut4qbiTMv1vzbREwwbpMEnDgduja2cKuNbSoWnd9DIPDokTQdcCMCYptXDcMM0ZhI5aQBAoYy~vOfFnhox6ScUI0ii1m7m9F8zFEulat6tPzzh2b9m2JorpI1QbgQ3f6gZ7sZ~~731Z2D6pu3EVbjfHsdpJoAy2wcktgCQx1OobENqSnTGeD4T2IAYAVQQOsLbV42AQpw4wGTNCYAdSAqcc91Spxn-w__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694603614&Signature=qK-smRXGdXLdmPvbKvskjy1R16mqVdOCUIB6FZrWeAdkNbk-Zueaf1~q9AoaNAbXKKpccM~Z9IoMF2NNTmrWvKS3VBwKSr-w5he8z7R2r4ulOI9cODWLpl~ut4qbiTMv1vzbREwwbpMEnDgduja2cKuNbSoWnd9DIPDokTQdcCMCYptXDcMM0ZhI5aQBAoYy~vOfFnhox6ScUI0ii1m7m9F8zFEulat6tPzzh2b9m2JorpI1QbgQ3f6gZ7sZ~~731Z2D6pu3EVbjfHsdpJoAy2wcktgCQx1OobENqSnTGeD4T2IAYAVQQOsLbV42AQpw4wGTNCYAdSAqcc91Spxn-w__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 12182
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 700aa70ccd1c08dc97b84e1db700ae96.cloudfront.net (CloudFront)
+> x-amz-cf-id: pnn0nX9gnIK97DYk_YLeJwZhdotCEA2p4JjKqv941gwlJcdEc0YO6A==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    0% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]    8% [>         ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   10% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   15% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   25% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   28% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   33% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   36% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   39% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   42% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   45% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   48% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   51% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   54% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   57% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   60% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   63% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   67% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   70% [=======>  ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   73% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   76% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   79% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   83% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   86% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   90% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   93% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   97% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 09:24:39
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 09:25:39 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694604339&Signature=f6Wx-PCbL~00~6Gb7Wpq9Nwao9~pY7tGol0bxu9slu0~3mqZPzbiM4bkGwrDgp~Mi2zaPkEJDKpEm-697tdMdstZNy9V1i8mt9-v8EEBXYvp~ovWMI2XSYrBGEFNCdiJsEK7j0LmfvPmCRt4CjorNYq3kPoNo1JG0QT1Cik-zK-TTi~nNMLRAtjBla1SmhBvVzX45YlnGlZxMrgVScfeWOuyluaMrjm5JzTKhidYJS4C2LTC6g7ixDAgy24r20sCdgAlPPW82s302DjMgRZa-dEWdQzJNR8Xp1EumJlI~4DN-KxG5tYkNyzOuqIL4ym~afA17ZyhYtHylnI36TccFg__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694597140.17.2446.235997|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694604339&Signature=f6Wx-PCbL~00~6Gb7Wpq9Nwao9~pY7tGol0bxu9slu0~3mqZPzbiM4bkGwrDgp~Mi2zaPkEJDKpEm-697tdMdstZNy9V1i8mt9-v8EEBXYvp~ovWMI2XSYrBGEFNCdiJsEK7j0LmfvPmCRt4CjorNYq3kPoNo1JG0QT1Cik-zK-TTi~nNMLRAtjBla1SmhBvVzX45YlnGlZxMrgVScfeWOuyluaMrjm5JzTKhidYJS4C2LTC6g7ixDAgy24r20sCdgAlPPW82s302DjMgRZa-dEWdQzJNR8Xp1EumJlI~4DN-KxG5tYkNyzOuqIL4ym~afA17ZyhYtHylnI36TccFg__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694604339&Signature=f6Wx-PCbL~00~6Gb7Wpq9Nwao9~pY7tGol0bxu9slu0~3mqZPzbiM4bkGwrDgp~Mi2zaPkEJDKpEm-697tdMdstZNy9V1i8mt9-v8EEBXYvp~ovWMI2XSYrBGEFNCdiJsEK7j0LmfvPmCRt4CjorNYq3kPoNo1JG0QT1Cik-zK-TTi~nNMLRAtjBla1SmhBvVzX45YlnGlZxMrgVScfeWOuyluaMrjm5JzTKhidYJS4C2LTC6g7ixDAgy24r20sCdgAlPPW82s302DjMgRZa-dEWdQzJNR8Xp1EumJlI~4DN-KxG5tYkNyzOuqIL4ym~afA17ZyhYtHylnI36TccFg__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 12674
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:54:29 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 791299e5e934e8ce6590f1212a1729de.cloudfront.net (CloudFront)
+> x-amz-cf-id: sfDDL4McsoqHLrh_LeUtw76jYW_ztcZH-c-ueygVz_h05jo1o2-PVw==
+> x-amz-cf-pop: ORD56-P4
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    5% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   10% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   15% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   22% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   25% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   28% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   34% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   40% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   43% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   46% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   50% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   53% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   56% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   60% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   63% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   66% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   70% [=======>  ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   72% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   75% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   79% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   82% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   86% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   89% [========> ] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   92% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   96% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 09:36:45
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 09:37:47 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605067&Signature=PlnTobZyARSRBSH6mldoUg~b~dlRdyY4hW1dAF-B4hxJgWxGL3L7RUrMm0SWDRwP6UPgqWAyLFiisFkkxov5gQCQhdrg2TYi1-QS~e2bKmN5sBWXlt6-LNgwmdvI0YBa9U7O4REMlZE3~WzBDWJROtCdOjp3T0o0M6AY8l1MFN7t4SCK7HbZEnU1ICs7tDOcX0amL46RGAIp6ewmxCx0EmNSpmPPo3fazfwctS~QZtbSb5n3-MDGqef~FnIn7sKgsTEntKLaoX-ll8yQlZsErUvsHRYZWQjS3Cw-4uYIbHNU~Fj~8VCbobv~Ghapf50hBT7WxNOB8RTD4Itk7yJqKw__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694597868.182.2445.835267|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605067&Signature=PlnTobZyARSRBSH6mldoUg~b~dlRdyY4hW1dAF-B4hxJgWxGL3L7RUrMm0SWDRwP6UPgqWAyLFiisFkkxov5gQCQhdrg2TYi1-QS~e2bKmN5sBWXlt6-LNgwmdvI0YBa9U7O4REMlZE3~WzBDWJROtCdOjp3T0o0M6AY8l1MFN7t4SCK7HbZEnU1ICs7tDOcX0amL46RGAIp6ewmxCx0EmNSpmPPo3fazfwctS~QZtbSb5n3-MDGqef~FnIn7sKgsTEntKLaoX-ll8yQlZsErUvsHRYZWQjS3Cw-4uYIbHNU~Fj~8VCbobv~Ghapf50hBT7WxNOB8RTD4Itk7yJqKw__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605067&Signature=PlnTobZyARSRBSH6mldoUg~b~dlRdyY4hW1dAF-B4hxJgWxGL3L7RUrMm0SWDRwP6UPgqWAyLFiisFkkxov5gQCQhdrg2TYi1-QS~e2bKmN5sBWXlt6-LNgwmdvI0YBa9U7O4REMlZE3~WzBDWJROtCdOjp3T0o0M6AY8l1MFN7t4SCK7HbZEnU1ICs7tDOcX0amL46RGAIp6ewmxCx0EmNSpmPPo3fazfwctS~QZtbSb5n3-MDGqef~FnIn7sKgsTEntKLaoX-ll8yQlZsErUvsHRYZWQjS3Cw-4uYIbHNU~Fj~8VCbobv~Ghapf50hBT7WxNOB8RTD4Itk7yJqKw__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 13635
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:50:37 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 cb0b891eddf58d69d157d55977c68bce.cloudfront.net (CloudFront)
+> x-amz-cf-id: n2Z0SK3ckdwFOGjH3EPWEQeCOCOBDVFppvSULXi3gdQ5wjvxpDrSNw==
+> x-amz-cf-pop: SFO53-P2
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    3% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   15% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   24% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   26% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   29% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   31% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   34% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   37% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   40% [====>     ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   42% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   45% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   49% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   52% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   55% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   58% [=====>    ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   62% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   66% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   69% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   72% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   75% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   78% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   82% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   85% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   88% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   91% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   94% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   98% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
+Current timestamp: 2023-09-13 09:48:51
+*** Trying https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/*
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://api.dev-central.ballerina.io/2.0/registry/packages/ballerina/http/* HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept: application/octet-stream
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> User-Agent: 2201.3.5
+>
+< HTTP 302 
+> content-disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> content-length: 0
+> date: Wed, 13 Sep 2023 09:49:51 GMT
+> deprecatemessage: 
+> isdeprecated: false
+> location: https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605791&Signature=a5yVSMMryzsgVp8U4Re3SoODEs35qXRVs~RSBPqSQMTlEZ-VOzCirrAyfe4rEsxgCF6rmsRlv0nCK7b5FQ-ppSWiRWDoeHYgFaxPab7wRjznfz0XFYpHTqZIoHhTQFOsdexMwAbYti5hz9NBAWMyl5dzrHxoWWSmke9XTAosoWIpNqiQZqXzw3UXHzzMMlLmK-klrTG~Ai~m7gFDIiSFkoq3KRpE~UGWLnY~xHb9oD9sp1Po07DChBEHz8RMgFjEiYu8BKUry4~Eq4Io-7DowoNjxtQMbTvPbtTS1k1Se9~GcPU~ba2IgobGycl8-ALhv~XXDdZMVxrcQu-7Hd3uvA__&Key-Pair-Id=K1LACXT8B3Y0DU
+> set-cookie: route=1694598591.958.2454.764430|f17b3c35429b88b902e84278c325d4c4; Path=/2.0/?(registry/packages.*); Secure; HttpOnly
+> strict-transport-security: max-age=15724800; includeSubDomains
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+*** Trying https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605791&Signature=a5yVSMMryzsgVp8U4Re3SoODEs35qXRVs~RSBPqSQMTlEZ-VOzCirrAyfe4rEsxgCF6rmsRlv0nCK7b5FQ-ppSWiRWDoeHYgFaxPab7wRjznfz0XFYpHTqZIoHhTQFOsdexMwAbYti5hz9NBAWMyl5dzrHxoWWSmke9XTAosoWIpNqiQZqXzw3UXHzzMMlLmK-klrTG~Ai~m7gFDIiSFkoq3KRpE~UGWLnY~xHb9oD9sp1Po07DChBEHz8RMgFjEiYu8BKUry4~Eq4Io-7DowoNjxtQMbTvPbtTS1k1Se9~GcPU~ba2IgobGycl8-ALhv~XXDdZMVxrcQu-7Hd3uvA__&Key-Pair-Id=K1LACXT8B3Y0DU
+* Connected to https://api.dev-central.ballerina.io/2.0/registry
+> GET https://fileserver.dev-central.ballerina.io/2.0/ballerina/http/2.5.3/ballerina-http-java11-2.5.3.bala?Expires=1694605791&Signature=a5yVSMMryzsgVp8U4Re3SoODEs35qXRVs~RSBPqSQMTlEZ-VOzCirrAyfe4rEsxgCF6rmsRlv0nCK7b5FQ-ppSWiRWDoeHYgFaxPab7wRjznfz0XFYpHTqZIoHhTQFOsdexMwAbYti5hz9NBAWMyl5dzrHxoWWSmke9XTAosoWIpNqiQZqXzw3UXHzzMMlLmK-klrTG~Ai~m7gFDIiSFkoq3KRpE~UGWLnY~xHb9oD9sp1Po07DChBEHz8RMgFjEiYu8BKUry4~Eq4Io-7DowoNjxtQMbTvPbtTS1k1Se9~GcPU~ba2IgobGycl8-ALhv~XXDdZMVxrcQu-7Hd3uvA__&Key-Pair-Id=K1LACXT8B3Y0DU HTTP
+> Host: https://api.dev-central.ballerina.io/2.0/registry
+> Accept-Encoding: identity
+> Ballerina-Platform: java11
+> Content-Disposition: attachment; filename=ballerina-http-java11-2.5.3.bala
+> User-Agent: 2201.3.5
+>
+< HTTP 200 
+> accept-ranges: bytes
+> age: 14126
+> content-length: 17382080
+> content-type: binary/octet-stream
+> date: Wed, 13 Sep 2023 05:54:29 GMT
+> etag: "b908f01e9d17072dcbac9e67dfdb3597-2"
+> last-modified: Tue, 29 Aug 2023 04:35:40 GMT
+> server: AmazonS3
+> via: 1.1 e006e171539cde52c00d735236295342.cloudfront.net (CloudFront)
+> x-amz-cf-id: E1vjmDOGka87KKIYFdh0GqqkAyAySBpU4B4EO3BFJjyDS0eYYJLHRQ==
+> x-amz-cf-pop: ORD56-P4
+> x-amz-server-side-encryption: AES256
+> x-cache: Hit from cloudfront
+< 
+* Connection to host https://api.dev-central.ballerina.io/2.0/registry left intact 
+
+ballerina/http:2.5.3 [central.ballerina.io -> home repo]    3% [>         ]   ballerina/http:2.5.3 [central.ballerina.io -> home repo]   11% [=>        ]  1ballerina/http:2.5.3 [central.ballerina.io -> home repo]   13% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   16% [=>        ]  2ballerina/http:2.5.3 [central.ballerina.io -> home repo]   18% [=>        ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   21% [==>       ]  3ballerina/http:2.5.3 [central.ballerina.io -> home repo]   24% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   27% [==>       ]  4ballerina/http:2.5.3 [central.ballerina.io -> home repo]   30% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   33% [===>      ]  5ballerina/http:2.5.3 [central.ballerina.io -> home repo]   36% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   38% [===>      ]  6ballerina/http:2.5.3 [central.ballerina.io -> home repo]   42% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   45% [====>     ]  7ballerina/http:2.5.3 [central.ballerina.io -> home repo]   47% [====>     ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   51% [=====>    ]  8ballerina/http:2.5.3 [central.ballerina.io -> home repo]   54% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   56% [=====>    ]  9ballerina/http:2.5.3 [central.ballerina.io -> home repo]   59% [=====>    ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   62% [======>   ] 10ballerina/http:2.5.3 [central.ballerina.io -> home repo]   65% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   68% [======>   ] 11ballerina/http:2.5.3 [central.ballerina.io -> home repo]   71% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   74% [=======>  ] 12ballerina/http:2.5.3 [central.ballerina.io -> home repo]   78% [=======>  ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   81% [========> ] 13ballerina/http:2.5.3 [central.ballerina.io -> home repo]   84% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   87% [========> ] 14ballerina/http:2.5.3 [central.ballerina.io -> home repo]   91% [=========>] 15ballerina/http:2.5.3 [central.ballerina.io -> home repo]   95% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]   98% [=========>] 16ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 17ballerina/http:2.5.3 [central.ballerina.io -> home repo]  100% [==========] 18
+ballerina/http:2.5.3 pulled from central successfully
