@@ -945,8 +945,8 @@ public class CentralAPIClient {
      */
     protected OkHttpClient getClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(0, TimeUnit.SECONDS)
                 .followRedirects(false)
                 .retryOnConnectionFailure(true)
                 .proxy(this.proxy)
