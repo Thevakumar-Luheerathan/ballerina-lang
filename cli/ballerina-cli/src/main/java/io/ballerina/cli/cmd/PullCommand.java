@@ -201,17 +201,17 @@ public class PullCommand implements BLauncherCmd {
                                                                getAccessTokenOfCLI(settings));
                 client.pullPackage(orgName, packageName, version, packagePathInBalaCache, supportedPlatform,
                                    RepoUtils.getBallerinaVersion(), false);
-//                if (version.equals(Names.EMPTY.getValue())) {
-//                    List<String> versions = client.getPackageVersions(orgName, packageName, supportedPlatform,
-//                            RepoUtils.getBallerinaVersion());
-//                    version = getLatestVersion(versions);
-//                }
-//                boolean hasCompilationErrors = pullDependencyPackages(orgName, packageName, version);
-//                if (hasCompilationErrors) {
-//                    CommandUtil.printError(this.errStream, "compilation contains errors", null, false);
-//                    CommandUtil.exitError(this.exitWhenFinish);
-//                    return;
-//                }
+                if (version.equals(Names.EMPTY.getValue())) {
+                    List<String> versions = client.getPackageVersions(orgName, packageName, supportedPlatform,
+                            RepoUtils.getBallerinaVersion());
+                    version = getLatestVersion(versions);
+                }
+                boolean hasCompilationErrors = pullDependencyPackages(orgName, packageName, version);
+                if (hasCompilationErrors) {
+                    CommandUtil.printError(this.errStream, "compilation contains errors", null, false);
+                    CommandUtil.exitError(this.exitWhenFinish);
+                    return;
+                }
             } catch (PackageAlreadyExistsException e) {
                 errStream.println(e.getMessage());
                 CommandUtil.exitError(this.exitWhenFinish);
