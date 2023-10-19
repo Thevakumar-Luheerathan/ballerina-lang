@@ -35,7 +35,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,6 +61,8 @@ public class RemotePackageRepository implements PackageRepository {
 
     private final FileSystemRepository fileSystemRepo;
     private final CentralAPIClient client;
+
+    private Map<ResolutionRequest, PackageMetadataResponse> cachedPackageMetadata = new HashMap<>();
 
     public RemotePackageRepository(FileSystemRepository fileSystemRepo, CentralAPIClient client) {
         this.fileSystemRepo = fileSystemRepo;
@@ -107,8 +111,11 @@ public class RemotePackageRepository implements PackageRepository {
         if (!options.offline()) {
             for (String supportedPlatform : SUPPORTED_PLATFORMS) {
                 try {
+                    long startTime = System.currentTimeMillis();
                     this.client.pullPackage(orgName, packageName, version, packagePathInBalaCache, supportedPlatform,
                             RepoUtils.getBallerinaVersion(), true);
+                    System.out.println("                Time taken to pull package from central:" +   (System.currentTimeMillis()
+                            - startTime) + "ms");
                 } catch (CentralClientException e) {
                     boolean enableOutputStream =
                             Boolean.parseBoolean(System.getProperty(CentralClientConstants.ENABLE_OUTPUT_STREAM));
@@ -143,10 +150,13 @@ public class RemotePackageRepository implements PackageRepository {
         }
 
         try {
+            long startTime = System.currentTimeMillis();
             for (String version : this.client.getPackageVersions(orgName, packageName, JvmTarget.JAVA_11.code(),
                     RepoUtils.getBallerinaVersion())) {
                 packageVersions.add(PackageVersion.from(version));
             }
+            System.out.println("                Time taken to get package versions from central:" +   (System.currentTimeMillis()
+                    - startTime) + "ms");
         } catch (ConnectionErrorException e) {
             // ignore connect to remote repo failure
             return new ArrayList<>(packageVersions);
@@ -172,8 +182,11 @@ public class RemotePackageRepository implements PackageRepository {
 
         try {
             PackageNameResolutionRequest resolutionRequest = toPackageNameResolutionRequest(requests);
+            long startTime = System.currentTimeMillis();
             PackageNameResolutionResponse response = this.client.resolvePackageNames(resolutionRequest,
                     JvmTarget.JAVA_11.code(), RepoUtils.getBallerinaVersion());
+            System.out.println("                Time taken to get package names from central: " +   (System.currentTimeMillis()
+                    - startTime) + "ms");
             List<ImportModuleResponse> remote = toImportModuleResponses(requests, response);
             return mergeNameResolution(filesystem, remote);
         } catch (ConnectionErrorException e) {
@@ -188,21 +201,21 @@ public class RemotePackageRepository implements PackageRepository {
     private List<ImportModuleResponse> mergeNameResolution(Collection<ImportModuleResponse> filesystem,
                                                            Collection<ImportModuleResponse> remote) {
         return new ArrayList<>(
-            Stream.of(filesystem, remote)
-                .flatMap(Collection::stream).collect(Collectors.toMap(
-                    ImportModuleResponse::importModuleRequest, Function.identity(),
-                    (ImportModuleResponse x, ImportModuleResponse y) -> {
-                        if (y.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
-                            return x;
-                        } else if (x.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
-                            return y;
-                        } else if (getLatest(x.packageDescriptor().version(),
-                                y.packageDescriptor().version()).equals(
-                                y.packageDescriptor().version())) {
-                            return y;
-                        }
-                        return x;
-                    })).values());
+                Stream.of(filesystem, remote)
+                        .flatMap(Collection::stream).collect(Collectors.toMap(
+                                ImportModuleResponse::importModuleRequest, Function.identity(),
+                                (ImportModuleResponse x, ImportModuleResponse y) -> {
+                                    if (y.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
+                                        return x;
+                                    } else if (x.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
+                                        return y;
+                                    } else if (getLatest(x.packageDescriptor().version(),
+                                            y.packageDescriptor().version()).equals(
+                                            y.packageDescriptor().version())) {
+                                        return y;
+                                    }
+                                    return x;
+                                })).values());
     }
 
     private List<ImportModuleResponse> toImportModuleResponses(Collection<ImportModuleRequest> requests,
@@ -274,19 +287,18 @@ public class RemotePackageRepository implements PackageRepository {
                 }
             }
         }
+
+        List<PackageMetadataResponse> remotePackages = new ArrayList<>(retrieveFromCache(updatedRequests));
         // Resolve the requests from remote repository if there are unresolved requests
         if (!updatedRequests.isEmpty()) {
             try {
                 PackageResolutionRequest packageResolutionRequest = toPackageResolutionRequest(updatedRequests);
+                long startTime = System.currentTimeMillis();
                 PackageResolutionResponse packageResolutionResponse = client.resolveDependencies(
                         packageResolutionRequest, JvmTarget.JAVA_11.code(),
                         RepoUtils.getBallerinaVersion());
-
-                Collection<PackageMetadataResponse> remotePackages =
-                        fromPackageResolutionResponse(updatedRequests, packageResolutionResponse);
-                // Merge central requests and local requests
-                // Here we will pick the latest package from remote or local
-                return mergeResolution(remotePackages, cachedPackages, deprecatedPackages);
+                System.out.println("                Time taken to resolve dependencies from central: " + (System.currentTimeMillis() - startTime) + "ms");
+                remotePackages.addAll(fromPackageResolutionResponse(updatedRequests, packageResolutionResponse));
 
             } catch (ConnectionErrorException e) {
                 // ignore connect to remote repo failure
@@ -295,8 +307,99 @@ public class RemotePackageRepository implements PackageRepository {
                 throw new ProjectException(e.getMessage());
             }
         }
+        if (!remotePackages.isEmpty()) {
+            // Merge central requests and local requests
+            // Here we will pick the latest package from remote or local
+            return mergeResolution(remotePackages, cachedPackages, deprecatedPackages);
+        }
         // Return cachedPackages when central requests are not performed
         return cachedPackages;
+    }
+
+    private Collection<PackageMetadataResponse> retrieveFromCache(List<ResolutionRequest> updatedRequests) {
+        List<PackageMetadataResponse> response = new ArrayList<>();
+        Iterator<ResolutionRequest> requestIterator = updatedRequests.iterator();
+        while (requestIterator.hasNext()) {
+            ResolutionRequest request = requestIterator.next();
+            for (Map.Entry<ResolutionRequest, PackageMetadataResponse> entry : cachedPackageMetadata.entrySet()) {
+
+                ResolutionRequest cachedRequest = entry.getKey();
+                PackageMetadataResponse pkgMetaDataResponse = entry.getValue();
+                PackageDescriptor latestPkgDesc = pkgMetaDataResponse.resolvedDescriptor();
+
+                if (!(cachedRequest.orgName().equals(request.orgName()) &&
+                        cachedRequest.packageName().equals(request.packageName()))) {
+                    continue;
+                }
+                if (cachedRequest.version().isPresent() && request.version().isPresent()) {
+                    // Check in both requests
+                    if (cachedRequest.version().get().value().major() == request.version().get().value().major() &&
+                            cachedRequest.version().get().value().minor() == request.version().get().value().minor() &&
+                            cachedRequest.packageLockingMode() == PackageLockingMode.MEDIUM &&
+                            request.packageLockingMode() == PackageLockingMode.MEDIUM) {
+                                response.add(pkgMetaDataResponse);
+                                requestIterator.remove();
+                    } else if (cachedRequest.version().get().value().major() == request.version().get().value().major() &&
+                            cachedRequest.packageLockingMode() == PackageLockingMode.SOFT &&
+                            request.packageLockingMode() == PackageLockingMode.SOFT) {
+                                response.add(pkgMetaDataResponse);
+                                requestIterator.remove();
+                    } else if (cachedRequest.version().get().value().major() == request.version().get().value().major() &&
+                            cachedRequest.version().get().value().minor() == request.version().get().value().minor() &&
+                            cachedRequest.version().get().value().patch() == request.version().get().value().patch() &&
+                            cachedRequest.packageLockingMode() == PackageLockingMode.HARD &&
+                            request.packageLockingMode() == PackageLockingMode.HARD) {
+                                response.add(pkgMetaDataResponse);
+                                requestIterator.remove();
+                    } else if (cachedRequest.version().get().value().major() == request.version().get().value().major() &&
+                            cachedRequest.version().get().value().minor() == request.version().get().value().minor() &&
+                            cachedRequest.version().get().value().patch() == request.version().get().value().patch() &&
+                            cachedRequest.packageLockingMode() == PackageLockingMode.MEDIUM &&
+                            request.packageLockingMode() == PackageLockingMode.HARD) {
+                                response.add(pkgMetaDataResponse);
+                                requestIterator.remove();
+                    } else if (cachedRequest.version().get().value().major() == request.version().get().value().major() &&
+                            cachedRequest.packageLockingMode() == PackageLockingMode.MEDIUM &&
+                            request.packageLockingMode() == PackageLockingMode.MEDIUM) {
+                                response.add(pkgMetaDataResponse);
+                                requestIterator.remove();
+                    } else if (request.version().get().value().major() == latestPkgDesc.version().value().major() &&
+                            request.version().get().value().minor() == latestPkgDesc.version().value().minor() &&
+                            request.packageLockingMode() == PackageLockingMode.MEDIUM) {
+                        response.add(pkgMetaDataResponse);
+                        requestIterator.remove();
+                    } else if (request.version().get().value().major() == latestPkgDesc.version().value().major() &&
+                            request.version().get().value().minor() == latestPkgDesc.version().value().minor() &&
+                            cachedRequest.version().get().value().patch() == request.version().get().value().patch() &&
+                            request.packageLockingMode() == PackageLockingMode.HARD) {
+                        response.add(pkgMetaDataResponse);
+                        requestIterator.remove();
+                    }
+                } else if (cachedRequest.version().isEmpty() && request.version().isPresent()) {
+                    // Check in responses
+                    if (request.version().get().value().major() == latestPkgDesc.version().value().major() &&
+                            request.version().get().value().minor() == latestPkgDesc.version().value().minor() &&
+                            request.packageLockingMode() == PackageLockingMode.MEDIUM) {
+                        response.add(entry.getValue());
+                        requestIterator.remove();
+                    } else if (request.version().get().value().major() == latestPkgDesc.version().value().major() &&
+                            request.packageLockingMode() == PackageLockingMode.SOFT) {
+                        response.add(entry.getValue());
+                        requestIterator.remove();
+                    } else if (request.version().get().value().major() == latestPkgDesc.version().value().major() &&
+                            request.version().get().value().minor() == latestPkgDesc.version().value().minor() &&
+                            request.version().get().value().patch() == latestPkgDesc.version().value().patch() &&
+                            request.packageLockingMode() == PackageLockingMode.HARD) {
+                        response.add(entry.getValue());
+                        requestIterator.remove();
+                    }
+                } else if (cachedRequest.version().isEmpty() && request.version().isEmpty()) {
+                    response.add(entry.getValue());
+                    requestIterator.remove();
+                }
+            }
+        }
+        return response;
     }
 
     private Collection<PackageMetadataResponse> mergeResolution(
@@ -305,43 +408,43 @@ public class RemotePackageRepository implements PackageRepository {
         List<PackageMetadataResponse> mergedResults = new ArrayList<>(
                 Stream.of(filesystem, remoteResolution)
                         .flatMap(Collection::stream).collect(Collectors.toMap(
-                        PackageMetadataResponse::packageLoadRequest, Function.identity(),
-                        (PackageMetadataResponse x, PackageMetadataResponse y) -> {
-                            if (y.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
-                                // filesystem response is resolved &  remote response is unresolved
-                                return x;
-                            } else if (x.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
-                                // filesystem response is unresolved &  remote response is resolved
-                                return y;
-                            } else if (x.resolvedDescriptor().version().equals(y.resolvedDescriptor().version())) {
-                                // Both responses have the same version and there is a mismatch in deprecated status,
-                                // we need to update the deprecated status in the file system repo
-                                // to match the remote repo as it is the most up to date.
-                                if (deprecatedPackages != null && y.resolvedDescriptor() != null &&
-                                        deprecatedPackages.contains(x) ^ y.resolvedDescriptor().getDeprecated()) {
-                                    fileSystemRepo.updateDeprecatedStatusForPackage(y.resolvedDescriptor());
-                                }
-                                return x;
-                            }
-                            // x not deprecate & y not deprecate
-                            //      - x is the latest : return x (this will not happen in real)
-                            //      - y is the latest : return y
-                            // x not deprecated & y deprecated
-                            //      - x is the latest : outdated. return y
-                            //      - y is the latest : return y
-                            // x deprecated & y not deprecated
-                            //      - x is the latest : outdated. return y
-                            //      - y is the latest : return y
-                            // x deprecated & y deprecated
-                            //      - x is the latest : not possible
-                            //      - y is the latest : return y
+                                PackageMetadataResponse::packageLoadRequest, Function.identity(),
+                                (PackageMetadataResponse x, PackageMetadataResponse y) -> {
+                                    if (y.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
+                                        // filesystem response is resolved &  remote response is unresolved
+                                        return x;
+                                    } else if (x.resolutionStatus().equals(ResolutionResponse.ResolutionStatus.UNRESOLVED)) {
+                                        // filesystem response is unresolved &  remote response is resolved
+                                        return y;
+                                    } else if (x.resolvedDescriptor().version().equals(y.resolvedDescriptor().version())) {
+                                        // Both responses have the same version and there is a mismatch in deprecated status,
+                                        // we need to update the deprecated status in the file system repo
+                                        // to match the remote repo as it is the most up to date.
+                                        if (deprecatedPackages != null && y.resolvedDescriptor() != null &&
+                                                deprecatedPackages.contains(x) ^ y.resolvedDescriptor().getDeprecated()) {
+                                            fileSystemRepo.updateDeprecatedStatusForPackage(y.resolvedDescriptor());
+                                        }
+                                        return x;
+                                    }
+                                    // x not deprecate & y not deprecate
+                                    //      - x is the latest : return x (this will not happen in real)
+                                    //      - y is the latest : return y
+                                    // x not deprecated & y deprecated
+                                    //      - x is the latest : outdated. return y
+                                    //      - y is the latest : return y
+                                    // x deprecated & y not deprecated
+                                    //      - x is the latest : outdated. return y
+                                    //      - y is the latest : return y
+                                    // x deprecated & y deprecated
+                                    //      - x is the latest : not possible
+                                    //      - y is the latest : return y
 
-                            // If the equivalent package is available in the file system repo,
-                            // try to update the deprecated status.
-                            // Because if available in cache, it won't be pulled.
-                            fileSystemRepo.updateDeprecatedStatusForPackage(y.resolvedDescriptor());
-                            return y;
-                        })).values());
+                                    // If the equivalent package is available in the file system repo,
+                                    // try to update the deprecated status.
+                                    // Because if available in cache, it won't be pulled.
+                                    fileSystemRepo.updateDeprecatedStatusForPackage(y.resolvedDescriptor());
+                                    return y;
+                                })).values());
         return mergedResults;
     }
 
@@ -366,6 +469,7 @@ public class RemotePackageRepository implements PackageRepository {
                         packageDescriptor,
                         dependencies);
                 response.add(responseDescriptor);
+                cachedPackageMetadata.put(resolutionRequest, responseDescriptor);
             } else {
                 // If the package is not in resolved we assume the package is unresolved
                 response.add(PackageMetadataResponse.createUnresolvedResponse(resolutionRequest));

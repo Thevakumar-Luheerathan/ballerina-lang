@@ -89,21 +89,33 @@ public class ResolutionEngine {
 
     public DependencyGraph<DependencyNode> resolveDependencies(Collection<ModuleLoadRequest> moduleLoadRequests) {
         // 1) Resolve import declarations into Packages.
+        long startTime = System.currentTimeMillis();
         Collection<DependencyNode> directDependencies = resolvePackages(moduleLoadRequests);
+        System.out.println("Time taken to resolve packages: " +
+                (System.currentTimeMillis() - startTime) + "ms");
 
         // 2) Create the static/initial dependency graph.
         //    This graph contains direct dependencies and their transitives,
         //     but we don't update versions.
+        startTime = System.currentTimeMillis();
         populateStaticDependencyGraph(directDependencies);
+        System.out.println("Time taken to populate static dependency graph: " +
+                (System.currentTimeMillis() - startTime) + "ms");
 
         // 3) Update the dependency versions if required
         //    This method traverse through the graph as many time as time until the graph is completed.
         //    Graph is complete when it contains latest compatible versions of all dependencies.
+        startTime = System.currentTimeMillis();
         updateDependencyVersions();
+        System.out.println("Time taken to update dependency versions: " +
+                (System.currentTimeMillis() - startTime) + "ms");
 
         // 4) Now the first round of update is done, but there may be more unresolved nodes in the graph builder.
         //    We need to keep resolving the unresolved nodes until the graph is complete.
+        startTime = System.currentTimeMillis();
         completeDependencyGraph();
+        System.out.println("Time taken to complete dependency graph: " +
+                (System.currentTimeMillis() - startTime) + "ms");
 
         // 5) Build final the dependency graph.
         return buildFinalDependencyGraph();
@@ -112,9 +124,11 @@ public class ResolutionEngine {
     private Collection<DependencyNode> resolvePackages(Collection<ModuleLoadRequest> moduleLoadRequests) {
         // Get the direct dependencies of the current package.
         // This list does not contain langlib and the root package.
+        long startTime = System.currentTimeMillis();
         PackageContainer<ModuleResolver.DirectPackageDependency> directDepsContainer =
                 moduleResolver.resolveModuleLoadRequests(moduleLoadRequests);
 
+        startTime = System.currentTimeMillis();
         List<ResolutionEngine.DependencyNode> directDeps = new ArrayList<>();
         for (ModuleResolver.DirectPackageDependency directPkgDependency : directDepsContainer.getAll()) {
             PackageVersion depVersion;
