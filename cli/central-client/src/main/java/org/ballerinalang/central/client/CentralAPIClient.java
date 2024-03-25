@@ -666,10 +666,10 @@ public class CentralAPIClient {
             }
 
             String printableResponse = packageResolutionResBodyContent;
-            if (printableResponse != null && printableResponse.length() > 1000) {
-                printableResponse = printableResponse.substring(0, 1000) + "\n\n NOTE: Only the first 1000 " +
-                        "characters of the package resolution response body is printed for clarity.\n";
-            }
+//            if (printableResponse != null && printableResponse.length() > 1000) {
+//                printableResponse = printableResponse.substring(0, 1000) + "\n\n NOTE: Only the first 1000 " +
+//                        "characters of the package resolution response body is printed for clarity.\n";
+//            }
             logResponseVerbose(packageResolutionResponse, printableResponse);
 
             if (body.isPresent()) {
@@ -1031,7 +1031,7 @@ public class CentralAPIClient {
                 }
             }
             if (payload != null) {
-                this.outStream.println("> Request: " + new Gson().toJson(request.body()) + "\n>");
+                this.outStream.println("> Request: " + payload + "\n>");
             }
             this.outStream.println(">");
         }
