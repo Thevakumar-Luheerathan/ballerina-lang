@@ -786,7 +786,8 @@ public class CentralAPIClient {
         Optional<ResponseBody> body = Optional.empty();
         OkHttpClient client = this.getClient();
         try {
-            RequestBody requestBody = RequestBody.create(JSON, new Gson().toJson(request));
+            String payload = new Gson().toJson(request);
+            RequestBody requestBody = RequestBody.create(JSON, payload);
             Request resolutionReq = getNewRequest(supportedPlatform, ballerinaVersion)
                     .post(requestBody)
                     .url(url)
@@ -797,7 +798,7 @@ public class CentralAPIClient {
 
             Call resolutionReqCall = client.newCall(resolutionReq);
             Response packageResolutionResponse = resolutionReqCall.execute();
-            logRequestConnectVerbose(resolutionReq, "/" + PACKAGES + "/" + RESOLVE_MODULES);
+            logRequestConnectVerbose(resolutionReq, "/" + PACKAGES + "/" + RESOLVE_MODULES, payload);
 
             body = Optional.ofNullable(packageResolutionResponse.body());
             String resolvePackageNamesBody = null;
@@ -864,7 +865,8 @@ public class CentralAPIClient {
         Optional<ResponseBody> body = Optional.empty();
         OkHttpClient client = this.getClient();
         try {
-            RequestBody requestBody = RequestBody.create(JSON, new Gson().toJson(request));
+            String payload = new Gson().toJson(request);
+            RequestBody requestBody = RequestBody.create(JSON, payload);
             Request packageResolutionReq = getNewRequest(supportedPlatform, ballerinaVersion)
                     .post(requestBody)
                     .url(url)
@@ -874,7 +876,8 @@ public class CentralAPIClient {
             logRequestInitVerbose(packageResolutionReq);
             Call packageResolutionReqCall = client.newCall(packageResolutionReq);
             Response packageResolutionResponse = packageResolutionReqCall.execute();
-            logRequestConnectVerbose(packageResolutionReq, "/" + PACKAGES + "/" + RESOLVE_DEPENDENCIES);
+            logRequestConnectVerbose(packageResolutionReq, "/" + PACKAGES + "/" + RESOLVE_DEPENDENCIES,
+                    payload);
 
             body = Optional.ofNullable(packageResolutionResponse.body());
             String packageResolutionResponseBody = null;
@@ -1740,6 +1743,10 @@ public class CentralAPIClient {
     }
 
     private void logRequestConnectVerbose(Request request, String resourceUrl) {
+        logRequestConnectVerbose(request, resourceUrl, null);
+    }
+
+    private void logRequestConnectVerbose(Request request, String resourceUrl, String payload) {
         if (this.verboseEnabled) {
             this.outStream.println("* Connected to " + this.baseUrl);
             this.outStream.println("> " + request.method() + " " + resourceUrl + " HTTP");
@@ -1750,6 +1757,9 @@ public class CentralAPIClient {
                 } else {
                     this.outStream.println("> " + headerName + ": " + request.header(headerName));
                 }
+            }
+            if (payload != null) {
+                this.outStream.println("> Request: " + payload + "\n>");
             }
             this.outStream.println(">");
         }
