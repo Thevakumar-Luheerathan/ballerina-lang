@@ -27,6 +27,7 @@ import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Credentials;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -133,6 +134,8 @@ public class CentralAPIClient {
     private static final int DEFAULT_READ_TIMEOUT = 60;
     private static final int DEFAULT_WRITE_TIMEOUT = 60;
     private static final int DEFAULT_CALL_TIMEOUT = 0;
+    private static final int MAX_RETRY = 1;
+    public static final String CONNECTION_RESET = "Connection reset";
 
     private final String baseUrl;
     private final Proxy proxy;
@@ -477,6 +480,25 @@ public class CentralAPIClient {
     public void pullPackage(String org, String name, String version, Path packagePathInBalaCache,
                             String supportedPlatform, String ballerinaVersion, boolean isBuild)
             throws CentralClientException {
+        int retryCount = 0;
+        while (retryCount <= MAX_RETRY) {
+            try {
+                pullPackageInternal(org, name, version, packagePathInBalaCache, supportedPlatform, ballerinaVersion,
+                        isBuild);
+                break;
+            } catch (CentralClientException centralClientException) {
+                if (centralClientException.getMessage().contains(CONNECTION_RESET) && retryCount < MAX_RETRY) {
+                    retryCount++;
+                    continue;
+                }
+                throw centralClientException;
+            }
+        }
+    }
+
+    private void pullPackageInternal(String org, String name, String version, Path packagePathInBalaCache,
+                            String supportedPlatform, String ballerinaVersion, boolean isBuild)
+            throws CentralClientException {
         String resourceUrl = "/" + PACKAGES + "/" + org + "/" + name;
         boolean enableOutputStream =
                 Boolean.parseBoolean(System.getProperty(CentralClientConstants.ENABLE_OUTPUT_STREAM));
@@ -624,6 +646,26 @@ public class CentralAPIClient {
      * @throws CentralClientException   Central Client exception.
      */
     public String[] pullTool(String toolId, String version, Path balaCacheDirPath, String supportedPlatform,
+                             String ballerinaVersion, boolean isBuild) throws CentralClientException {
+        int retryCount = 0;
+        String[] result = new String[0];
+        while (retryCount <= MAX_RETRY) {
+            try {
+                result = pullToolInternal(toolId, version, balaCacheDirPath, supportedPlatform, ballerinaVersion,
+                        isBuild);
+                break;
+            } catch (CentralClientException centralClientException) {
+                if (centralClientException.getMessage().contains(CONNECTION_RESET) && retryCount < MAX_RETRY) {
+                    retryCount++;
+                    continue;
+                }
+                throw centralClientException;
+            }
+        }
+        return result;
+    }
+
+    private String[] pullToolInternal(String toolId, String version, Path balaCacheDirPath, String supportedPlatform,
                          String ballerinaVersion, boolean isBuild) throws CentralClientException {
         String resourceUrl = "/" + TOOLS + "/" + toolId;
         boolean enableOutputStream =
@@ -1762,6 +1804,56 @@ public class CentralAPIClient {
                 this.outStream.println("> Request: " + payload + "\n>");
             }
             this.outStream.println(">");
+        }
+    }
+
+
+    class CustomRetryInterceptor implements Interceptor {
+        private final int maxRetries;
+        private int retryCount = 0;
+        CustomRetryInterceptor(int maxRetry) {
+            this.maxRetries = maxRetry;
+        }
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Response response = null;
+            while (retryCount <= maxRetries) {
+                response = chain.proceed(request);
+                if (response.code() < 500 || retryCount == maxRetries) {
+                    return response;
+                }
+                retryCount++;
+                Optional<ResponseBody> body = Optional.ofNullable(response.body());
+                String responseBodyString = null;
+                if (body.isPresent()) {
+                    responseBodyString = body.get().string();
+                }
+                logRetryVerbose(response, responseBodyString, request);
+                response.close();
+            }
+            return response;
+        }
+
+        private void logRetryVerbose(Response response, String bodyContent, Request request) {
+            if (verboseEnabled) {
+                Optional<ResponseBody> body = Optional.ofNullable(response.body());
+                outStream.println("< HTTP " + response.code() + " " + response.message());
+
+                if (body.isPresent()) {
+                    for (String headerName : response.headers().names()) {
+                        outStream.println("> " + headerName + ": " + response.header(headerName));
+                    }
+                    outStream.println("< ");
+                    if (bodyContent != null && !bodyContent.isEmpty()) {
+                        outStream.println(bodyContent);
+                    }
+                    outStream.println("* Connection to host " + baseUrl + " left intact \n");
+                }
+                outStream.println("* Retrying request to " + request.url() + " due to " + response.code() +
+                        " response code. Retry attempt: " + retryCount);
+            }
         }
     }
 }
