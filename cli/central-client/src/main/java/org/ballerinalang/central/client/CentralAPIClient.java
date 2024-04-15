@@ -488,6 +488,9 @@ public class CentralAPIClient {
                 break;
             } catch (CentralClientException centralClientException) {
                 if (centralClientException.getMessage().contains(CONNECTION_RESET) && retryCount < MAX_RETRY) {
+                    outStream.println("* Retrying to pull the package: " + org + "/" + name + ":" + version + "due to: "
+                                    + centralClientException.getMessage() + ". Retry attempt: " + retryCount + 1);
+                    outStream.println();
                     retryCount++;
                     continue;
                 }
@@ -1474,6 +1477,7 @@ public class CentralAPIClient {
                 .followRedirects(false)
                 .retryOnConnectionFailure(true)
                 .proxy(this.proxy)
+                .addInterceptor(new CustomRetryInterceptor(MAX_RETRY))
                 .build();
 
         if ((!(this.proxyUsername).isEmpty() && !(this.proxyPassword).isEmpty())) {
