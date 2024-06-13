@@ -1,1 +1,0 @@
-int myVal = 5;

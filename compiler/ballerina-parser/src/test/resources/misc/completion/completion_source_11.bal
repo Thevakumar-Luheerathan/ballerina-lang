@@ -1,3 +1,0 @@
-function testFunction() {
-    lambda = isolated
-    }

@@ -1,6 +1,0 @@
-
-configurable 
-
-public function main() {
-    
-}

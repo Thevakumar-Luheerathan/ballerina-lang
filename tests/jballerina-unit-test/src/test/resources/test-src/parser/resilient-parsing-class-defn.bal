@@ -1,1 +1,0 @@
-public distinct class

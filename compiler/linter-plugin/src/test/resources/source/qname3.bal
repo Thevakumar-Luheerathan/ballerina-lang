@@ -1,5 +1,0 @@
-public function main() {
-    map<float> m = { a:float
-        :
-        PI };
-}

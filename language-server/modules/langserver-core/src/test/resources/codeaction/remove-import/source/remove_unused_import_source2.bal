@@ -1,2 +1,0 @@
- 
-import ballerina/module1;

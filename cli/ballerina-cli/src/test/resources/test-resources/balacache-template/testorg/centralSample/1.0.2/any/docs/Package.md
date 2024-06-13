@@ -1,1 +1,0 @@
-central template sample

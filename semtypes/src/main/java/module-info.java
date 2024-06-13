@@ -1,3 +1,0 @@
-module io.ballerina.semtype {
-
-}

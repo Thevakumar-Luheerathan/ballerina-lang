@@ -1,2 +1,0 @@
-echoService on someListner {
-}

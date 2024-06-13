@@ -1,5 +1,0 @@
-import 'service.
-
-function testImports() {
-    
-}
