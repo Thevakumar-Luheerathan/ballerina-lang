@@ -1,0 +1,17 @@
+import ballerina/io;
+
+public function main() returns error? {
+    // test io pref
+
+    // write 100 files
+    foreach var i in 0 ..< 100 {
+        string[] content = ["Hello, World!", "Hello," + i.toString() + " World!"];
+        check io:fileWriteLines("file" + i.toString() + ".txt", content);
+    }
+
+    // read 100 files
+    foreach var i in 0 ..< 100 {
+        string[] lines = check io:fileReadLines("file" + i.toString() + ".txt");
+        io:println(lines);
+    }
+}
