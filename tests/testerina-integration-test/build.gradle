@@ -96,6 +96,10 @@ test {
     useTestNG() {
         suites 'src/test/resources/testng.xml'
     }
+    testLogging {
+        events "started", "passed", "failed", "skipped"
+        showStandardStreams = true
+    }
 
     jacoco.excludes = ["org.terasology.protobuf.*", "*MethodAccess", "*FieldAccess"]
 }

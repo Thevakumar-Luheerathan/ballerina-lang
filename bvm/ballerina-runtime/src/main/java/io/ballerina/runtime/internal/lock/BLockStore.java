@@ -18,21 +18,21 @@
 
 package io.ballerina.runtime.internal.lock;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.internal.errors.ErrorReasons;
 import io.ballerina.runtime.internal.scheduling.Strand;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 /**
- * Class used for generating code to manage Ballerina locks.
+ * Class that keep Ballerina locks based on lock name.
  *
  * @since 1.2.0
  */
-@SuppressWarnings("unused")
 public class BLockStore {
 
     /**
@@ -48,13 +48,22 @@ public class BLockStore {
     }
 
     /*
-        This is code generated method to get Ballerina global lock from lock name and lock.
+        This is code generated method to get Ballerina lock and lock.
     */
     @SuppressWarnings("unused")
     public void lock(Strand strand, String lockName) {
         try {
             strand.yield();
-            getLockFromMap(lockName).lock();
+            ReentrantLock lockFromMap = getLockFromMap(lockName);
+            boolean r;
+            try {
+                r = lockFromMap.tryLock(100, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (!r) {
+                throw new RuntimeException("Unable to acquire lock for " + lockName);
+            }
             strand.acquiredLockCount++;
         } finally {
             strand.resume();
@@ -62,21 +71,7 @@ public class BLockStore {
     }
 
     /*
-     This is code generated method to get Ballerina object lock and lock.
-    */
-    @SuppressWarnings("unused")
-    public void lock(Strand strand, ReentrantLock lock) {
-        try {
-            strand.yield();
-            lock.lock();
-            strand.acquiredLockCount++;
-        } finally {
-            strand.resume();
-        }
-    }
-
-    /*
-        This is code generated method to get Ballerina global lock from lock name and unlock.
+        This is code generated method to get Ballerina lock and unlock.
     */
     @SuppressWarnings("unused")
     public void unlock(Strand strand, String lockName) {
@@ -89,19 +84,6 @@ public class BLockStore {
         }
     }
 
-    /*
-    This is code generated method to get Ballerina object lock and unlock.
-    */
-    @SuppressWarnings("unused")
-    public void unlock(Strand strand, ReentrantLock lock) {
-        try {
-            strand.yield();
-            lock.unlock();
-            strand.acquiredLockCount--;
-        } finally {
-            strand.resume();
-        }
-    }
 
     /*
         This is code generated method check and panic before async call if strand is in lock

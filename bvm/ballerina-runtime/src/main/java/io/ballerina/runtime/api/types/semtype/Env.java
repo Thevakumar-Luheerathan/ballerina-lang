@@ -18,11 +18,6 @@
 
 package io.ballerina.runtime.api.types.semtype;
 
-import io.ballerina.runtime.internal.types.semtype.CellAtomicType;
-import io.ballerina.runtime.internal.types.semtype.FunctionAtomicType;
-import io.ballerina.runtime.internal.types.semtype.ListAtomicType;
-import io.ballerina.runtime.internal.types.semtype.MappingAtomicType;
-
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -34,6 +29,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
+
+import io.ballerina.runtime.internal.types.semtype.CellAtomicType;
+import io.ballerina.runtime.internal.types.semtype.FunctionAtomicType;
+import io.ballerina.runtime.internal.types.semtype.ListAtomicType;
+import io.ballerina.runtime.internal.types.semtype.MappingAtomicType;
 
 /**
  * Represent the environment in which {@code SemTypes} are defined in. Type
@@ -249,6 +249,7 @@ public final class Env {
         private final AtomicInteger nextListIndex = new AtomicInteger(0);
         private final AtomicInteger nextFunctionIndex = new AtomicInteger(0);
         private final AtomicInteger nextMappingIndex = new AtomicInteger(0);
+        private volatile Thread cellThread = null;
 
         private AtomTable() {
 
@@ -271,8 +272,23 @@ public final class Env {
             }
         }
 
-        private static TypeAtom getOrCreateInner(ReadWriteLock rwLock, Map<AtomicType, Reference<TypeAtom>> table,
-                                                 AtomicInteger nextIndex, AtomicType atomicType) {
+        private TypeAtom getOrCreateInner(ReadWriteLock rwLock, Map<AtomicType, Reference<TypeAtom>> table,
+                                          AtomicInteger nextIndex, AtomicType atomicType) {
+            boolean b;
+            try {
+                b = rwLock.readLock().tryLock(100, java.util.concurrent.TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (!b) {
+                var stackTrace = cellThread.getStackTrace();
+                StringBuilder sb = new StringBuilder();
+                for (StackTraceElement stackTraceElement : stackTrace) {
+                    sb.append(stackTraceElement.toString()).append("\n");
+                }
+                throw new RuntimeException("Timeout" + sb);
+            }
+
             rwLock.readLock().lock();
             try {
                 Reference<TypeAtom> ref = table.get(atomicType);
@@ -285,15 +301,23 @@ public final class Env {
             } finally {
                 rwLock.readLock().unlock();
             }
-            int index = nextIndex.getAndIncrement();
-            TypeAtom result = TypeAtom.createTypeAtom(index, atomicType);
-            AtomicType key = result.atomicType();
-            WeakReference<TypeAtom> value = new WeakReference<>(result);
             rwLock.writeLock().lock();
             try {
+                Reference<TypeAtom> ref = table.get(atomicType);
+                if (ref != null) {
+                    TypeAtom atom = ref.get();
+                    if (atom != null) {
+                        return atom;
+                    }
+                }
+                int index = nextIndex.getAndIncrement();
+                TypeAtom result = TypeAtom.createTypeAtom(index, atomicType);
+                AtomicType key = result.atomicType();
+                WeakReference<TypeAtom> value = new WeakReference<>(result);
                 table.put(key, value);
                 return result;
             } finally {
+                cellThread = null;
                 rwLock.writeLock().unlock();
             }
         }
