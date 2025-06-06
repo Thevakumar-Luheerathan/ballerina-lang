@@ -49,15 +49,13 @@ import org.ballerinalang.util.diagnostic.DiagnosticErrorCode;
 import org.wso2.ballerinalang.compiler.util.Names;
 import org.wso2.ballerinalang.util.RepoUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.ballerina.projects.util.ProjectConstants.BALLERINA_HOME;
@@ -87,6 +85,28 @@ public class PackageResolution {
 
     private List<ModuleContext> topologicallySortedModuleList;
     private Collection<ResolvedPackageDependency> dependenciesWithTransitives;
+
+    private static final Boolean isWindows = System.getProperty("os.name").toLowerCase(Locale.getDefault())
+            .contains("win");
+
+    private static class StreamGobbler extends Thread {
+        private final InputStream inputStream;
+        private final PrintStream printStream;
+
+        public StreamGobbler(InputStream inputStream, PrintStream printStream) {
+            this.inputStream = inputStream;
+            this.printStream = printStream;
+        }
+
+        @Override
+        public void run() {
+            try (Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8)) {
+                while (sc.hasNextLine()) {
+                    printStream.println(sc.nextLine());
+                }
+            }
+        }
+    }
 
     private PackageResolution(PackageContext rootPackageContext, CompilationOptions compilationOptions) {
         this.rootPackageContext = rootPackageContext;
@@ -133,7 +153,11 @@ public class PackageResolution {
 
             // We use the pull command to generate the BIR of the dependency.
             List<String> cmdArgs = new ArrayList<>();
-            cmdArgs.add(System.getProperty(BALLERINA_HOME) + "/bin/bal");
+            if (isWindows) {
+                cmdArgs.add(System.getProperty(BALLERINA_HOME) + "\\bin\\bal.bat");
+            } else {
+                cmdArgs.add(System.getProperty(BALLERINA_HOME) + "/bin/bal");
+            }
             cmdArgs.add("pull");
             cmdArgs.add(STICKY_FLAG + EQUAL + resolutionOptions.sticky());
             cmdArgs.add(OFFLINE_FLAG + EQUAL + resolutionOptions.offline());
@@ -146,9 +170,12 @@ public class PackageResolution {
             }
             cmdArgs.add(packageDescriptor.toString());
 
-            ProcessBuilder processBuilder = new ProcessBuilder(cmdArgs);
+            ProcessBuilder processBuilder = (new ProcessBuilder()).redirectErrorStream(true);
+            processBuilder.command(cmdArgs.toArray(new String[0]));
             try {
                 Process process = processBuilder.start();
+                StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream(), System.out);
+                outputGobbler.start();
                 int i = process.waitFor();
                 if (i != 0) {
                     String errMessage = packageDescriptor.toString();
@@ -157,6 +184,7 @@ public class PackageResolution {
                     }
                     throw new ProjectException("failed to compile " + errMessage);
                 }
+                outputGobbler.join();
             } catch (IOException | InterruptedException e) {
                 throw new ProjectException(e);
             }

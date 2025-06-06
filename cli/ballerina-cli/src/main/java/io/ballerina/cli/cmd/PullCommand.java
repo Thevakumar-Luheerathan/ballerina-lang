@@ -253,7 +253,7 @@ public class PullCommand implements BLauncherCmd {
         } catch (PackageAlreadyExistsException e) {
             // If version is specified by the user && the package exists, it shouldn't reach this point.
             assert version.equals(Names.EMPTY.getValue());
-            outStream.println("Package already exists.\n");
+            outStream.println("Package already exists.\n" + orgName + " " + packageName + " " + version);
             version = e.version();
         } catch (CentralClientException e) {
             errStream.println("package not found: " + orgName + "/" + packageName);
