@@ -272,7 +272,8 @@ public class DefaultPackageResolver implements PackageResolver {
 
         // Resolve packages from custom repos before resolving from the central
         List<ResolutionRequest> unresolvedNonBalOrgRequests = centralLoadRequests.stream()
-                .filter(r -> !r.packageDescriptor().org().toString().startsWith(ProjectConstants.BALLERINA_ORG))
+                .filter(r -> !r.packageDescriptor().org().toString().startsWith(ProjectConstants.BALLERINA_ORG) &&
+                                            !r.packageDescriptor().org().toString().startsWith(ProjectConstants.BALLERINAX_ORG))
                 .collect(Collectors.toList());
 
         for (Map.Entry<String, PackageRepository> customRepoRequestEntry : customRepos.entrySet()) {

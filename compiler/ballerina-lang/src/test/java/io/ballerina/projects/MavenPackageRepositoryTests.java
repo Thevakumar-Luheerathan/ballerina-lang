@@ -47,7 +47,7 @@ public class MavenPackageRepositoryTests {
     private static class MockMavenPackageRepository extends MavenPackageRepository {
 
         public MockMavenPackageRepository(Environment environment, Path cacheDirectory, String distributionVersion) {
-            super(environment, cacheDirectory, distributionVersion, null, null);
+            super(environment, cacheDirectory, distributionVersion, null, null, false);
         }
 
 
