@@ -214,8 +214,15 @@ public class MavenPackageRepository implements PackageRepository {
                 List<PackageName> possiblePackageNames = ProjectUtils.getPossiblePackageNames(
                         importModuleRequest.packageOrg(), importModuleRequest.moduleName());
                 for (PackageName packageName : possiblePackageNames) {
-                    List<String> packageVersions = this.client.getPackageVersions(
-                            orgName, packageName.toString(), Paths.get(repoLocation));
+                    List<String> packageVersions;
+                    if (isProxyCentral) { // TODO : check central logic
+                        packageVersions = this.client.getPackageVersionsInCentralProxy(
+                                orgName, packageName.toString(), Paths.get(repoLocation));
+                        packageVersions.removeAll(getIncompatibleDistPkgVer(packageVersions, orgName, packageName.toString()));
+                    } else {
+                        packageVersions = this.client.getPackageVersions(
+                                orgName, packageName.toString(), Paths.get(repoLocation));
+                    }
                     if (!packageVersions.isEmpty()) {
                         List<PackageVersion> packageVersionsList = new ArrayList<>();
                         packageVersions.stream().map(PackageVersion::from).forEach(packageVersionsList::add);

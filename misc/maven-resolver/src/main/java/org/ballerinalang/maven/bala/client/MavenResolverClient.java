@@ -298,7 +298,7 @@ public class MavenResolverClient {
         LocalRepository localRepo = new LocalRepository(localRepoPath.toAbsolutePath().toString());
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
         session.setOffline(false);
-        session.setUpdatePolicy(RepositoryPolicy.UPDATE_POLICY_ALWAYS); // TODO :  use an interval as "interval:1"
+        session.setUpdatePolicy("interval:10"); // TODO :  use an interval as "interval:1"
         session.setChecksumPolicy(org.eclipse.aether.repository.RepositoryPolicy.CHECKSUM_POLICY_IGNORE);
         Metadata metadata = new DefaultMetadata(
                 groupId,
@@ -323,6 +323,52 @@ public class MavenResolverClient {
             try {
                 Document document = parseXmlFile(metadataFile);
                 return parsePackageMetadata(document, groupId, artifactId);
+            } catch (ParserConfigurationException | IOException | SAXException e) {
+                throw new MavenResolverClientException("Failed to parse metadata XML: " + e.getMessage());
+            }
+        }
+        throw new MavenResolverClientException("Metadata file not found or could not be resolved");
+    }
+
+
+    /**
+     * Get package search metadata from the Maven repository, including all packages and their details, by parsing the
+     * maven-metadata.xml file.
+     *
+     * @param query    artifact ID of the package
+     * @param localRepoPath path to the local Maven repository
+     * @return PkgSearchMavenMetadata object containing parsed XML metadata
+     * @throws Exception when metadata resolution or XML parsing fails
+     */
+    public PkgSearchMavenMetadata getPkgSearchMetadata(String query, Path localRepoPath) throws MavenResolverClientException {
+        LocalRepository localRepo = new LocalRepository(localRepoPath.toAbsolutePath().toString());
+        session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
+        session.setOffline(false);
+        session.setUpdatePolicy(RepositoryPolicy.UPDATE_POLICY_ALWAYS); // TODO :  use an interval as "interval:1"
+        session.setChecksumPolicy(org.eclipse.aether.repository.RepositoryPolicy.CHECKSUM_POLICY_IGNORE);
+        Metadata metadata = new DefaultMetadata(
+                "__packagesearch__",
+                query,
+                "maven-metadata.xml",
+                Metadata.Nature.RELEASE_OR_SNAPSHOT
+        );
+        MetadataRequest metadataRequest = new MetadataRequest(
+                metadata,
+                this.repository.build(),
+                null
+        );
+        MetadataResult result = system.resolveMetadata(
+                session,
+                Collections.singletonList(metadataRequest)
+        ).get(0);
+        Metadata metadataResult = result.getMetadata();
+
+        // Parse the XML file
+        File metadataFile = metadataResult.getFile();
+        if (metadataFile != null && metadataFile.exists()) {
+            try {
+                Document document = parseXmlFile(metadataFile);
+                return parsePkgSearchMetadata(document, "__packagesearch__", query);
             } catch (ParserConfigurationException | IOException | SAXException e) {
                 throw new MavenResolverClientException("Failed to parse metadata XML: " + e.getMessage());
             }
@@ -358,6 +404,73 @@ public class MavenResolverClient {
         
         metadata.setVersions(versions);
         return metadata;
+    }
+
+    /**
+     * Parse the XML Document into a PkgSearchMavenMetadata object.
+     *
+     * @param document the XML document
+     * @param groupId  the group ID
+     * @param artifactId the artifact ID
+     * @return PkgSearchMavenMetadata object with all parsed data
+     */
+    private PkgSearchMavenMetadata parsePkgSearchMetadata(Document document, String groupId, String artifactId) {
+        PkgSearchMavenMetadata metadata = new PkgSearchMavenMetadata();
+        metadata.setGroupId(getTagValue(document, "groupId"));
+        metadata.setArtifactId(getTagValue(document, "artifactId"));
+        
+        // Parse packages
+        NodeList packageNodes = document.getElementsByTagName("package");
+        List<Package> packages = new ArrayList<>();
+        
+        for (int i = 0; i < packageNodes.getLength(); i++) {
+            Node node = packageNodes.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element packageElement = (Element) node;
+                Package pkg = parsePackage(packageElement);
+                packages.add(pkg);
+            }
+        }
+        
+        metadata.setPackages(packages);
+        return metadata;
+    }
+
+    /**
+     * Parse a single package element into a Package object.
+     *
+     * @param packageElement the package XML element
+     * @return Package object
+     */
+    private Package parsePackage(Element packageElement) {
+        Package pkg = new Package();
+        pkg.setOrg(getElementTextContent(packageElement, "org"));
+        pkg.setName(getElementTextContent(packageElement, "name"));
+        pkg.setVersion(getElementTextContent(packageElement, "version"));
+        pkg.setSummary(getElementTextContent(packageElement, "summary"));
+        String createdDateStr = getElementTextContent(packageElement, "createdDate");
+        if (!createdDateStr.isEmpty()) {
+            try {
+                pkg.setCreatedDate(Long.parseLong(createdDateStr));
+            } catch (NumberFormatException e) {
+                pkg.setCreatedDate(0);
+            }
+        }
+
+        List<String> authors = new ArrayList<>();
+        Element authorsElement = (Element) packageElement.getElementsByTagName("authors").item(0);
+        if (authorsElement != null) {
+            NodeList authorNodes = authorsElement.getElementsByTagName("author");
+            for (int i = 0; i < authorNodes.getLength(); i++) {
+                Node authorNode = authorNodes.item(i);
+                if (authorNode.getNodeType() == Node.ELEMENT_NODE) {
+                    authors.add(authorNode.getTextContent().trim());
+                }
+            }
+        }
+        pkg.setAuthors(authors);
+        
+        return pkg;
     }
 
     /**
@@ -534,34 +647,6 @@ public class MavenResolverClient {
         return tempFile;
     }
 
-//public PackageResolutionResponse resolveDependencies(PackageResolutionRequest packageResolutionRequest,
-//                                                    String supportedPlatform, String ballerinaVersion,
-//                                                    Path repoLocation) throws MavenResolverClientException {
-//    try {
-//        packageResolutionRequest.getPackages().forEach(pkg -> {
-//            String cacheKey = pkg.org() + ":" + pkg.getName();
-//            if (!metadataCache.containsKey(cacheKey)) {
-//                try {
-//                    PackageMavenMetadata metadata = getPackageMetadata(pkg.org(), pkg.getName(), repoLocation);
-//                    metadataCache.put(cacheKey, metadata);
-//                } catch (MavenResolverClientException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        for (PackageResolutionRequest.Package pkg : packageResolutionRequest.getPackages()) {
-//            if
-//
-//        }
-//
-//
-//
-//    } catch (RuntimeException e) {
-//        throw new MavenResolverClientException("Failed to resolve package metadata: " + e.getCause().getMessage(), e);
-//    }
-//    return null;
-//}
-
     /**
      * Data class representing package metadata from the Maven XML.
      */
@@ -605,6 +690,127 @@ public class MavenResolverClient {
                     ", artifactId='" + artifactId + '\'' +
                     ", versions=" + versions +
                     '}';
+        }
+    }
+
+    /**
+     * Data class representing package search metadata from the Maven XML.
+     */
+    public static class PkgSearchMavenMetadata {
+        private String groupId;
+        private String artifactId;
+        private List<Package> packages;
+
+        public PkgSearchMavenMetadata() {
+            this.packages = new ArrayList<>();
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
+
+        public String getArtifactId() {
+            return artifactId;
+        }
+
+        public void setArtifactId(String artifactId) {
+            this.artifactId = artifactId;
+        }
+
+        public List<Package> getPackages() {
+            return packages;
+        }
+
+        public void setPackages(List<Package> packages) {
+            this.packages = packages;
+        }
+
+        @Override
+        public String toString() {
+            return "PkgSearchMavenMetadata{" +
+                    "groupId='" + groupId + '\'' +
+                    ", artifactId='" + artifactId + '\'' +
+                    ", packages=" + packages +
+                    '}';
+        }
+    }
+
+    /**
+     * Data class representing a package in the package search metadata.
+     */
+    public static class Package {
+        private String org;
+        private String name;
+        private String version;
+        private String summary;
+        private long createdDate;
+        private List<String> authors;
+
+        public Package() {
+        }
+
+        public String getOrg() {
+            return org;
+        }
+
+        public void setOrg(String org) {
+            this.org = org;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getSummary() {
+            return summary;
+        }
+
+        public void setSummary(String summary) {
+            this.summary = summary;
+        }
+
+        @Override
+        public String toString() {
+            return "Package{" +
+                    "org='" + org + '\'' +
+                    ", name='" + name + '\'' +
+                    ", version='" + version + '\'' +
+                    ", summary='" + summary + '\'' +
+                    ", createdDate=" + createdDate +
+                    ", authors=" + authors +
+                    '}';
+        }
+
+        public long getCreatedDate() {
+            return createdDate;
+        }
+
+        public void setCreatedDate(long createdDate) {
+            this.createdDate = createdDate;
+        }
+
+        public List<String> getAuthors() {
+            return authors;
+        }
+
+        public void setAuthors(List<String> authors) {
+            this.authors = authors;
         }
     }
 
