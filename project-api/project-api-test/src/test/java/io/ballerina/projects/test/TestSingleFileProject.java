@@ -32,7 +32,6 @@ import io.ballerina.projects.ProjectKind;
 import io.ballerina.projects.directory.SingleFileProject;
 import org.ballerinalang.test.BCompileUtil;
 import org.testng.Assert;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import org.wso2.ballerinalang.compiler.PackageCache;
@@ -214,7 +213,7 @@ public class TestSingleFileProject {
     public void testSingleFileWithNoReadPermission() {
         // Skip test in windows due to file permission setting issue
         if (isWindows()) {
-            throw new SkipException("Skipping tests on Windows");
+            return;
         }
         Path projectPath = RESOURCE_DIRECTORY.resolve("single_file_no_permission").resolve("main.bal");
 

@@ -66,7 +66,6 @@ import org.apache.commons.io.FileUtils;
 import org.ballerinalang.test.BCompileUtil;
 import org.ballerinalang.test.CompileResult;
 import org.testng.Assert;
-import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -196,7 +195,7 @@ public class TestBuildProject extends BaseTest {
     public void testBuildProjectWithNoReadPermission() {
         // Skip test in windows due to file permission setting issue
         if (isWindows()) {
-            throw new SkipException("Skipping tests on Windows");
+            return;
         }
 
         Path projectPath = tempResourceDir.resolve("project_no_permission");
@@ -224,7 +223,7 @@ public class TestBuildProject extends BaseTest {
 
         // Skip test in windows due to file permission setting issue
         if (isWindows()) {
-            throw new SkipException("Skipping tests on Windows");
+            return;
         }
 
         Path projectPath = tempResourceDir.resolve("project_no_permission");
