@@ -217,8 +217,7 @@ public class TestBuildProject extends BaseTest {
         resetPermissions(projectPath);
     }
 
-    @Test (description = "tests compiling a build project with no write permission",
-            expectedExceptions = RuntimeException.class)
+    @Test (description = "tests compiling a build project with no write permission")
     public void testBuildProjectWithNoWritePermission() {
 
         // Skip test in windows due to file permission setting issue
@@ -246,11 +245,16 @@ public class TestBuildProject extends BaseTest {
         Collection<ResolvedPackageDependency> resolvedPackageDependencies
                 = currentPackage.getResolution().allDependencies();
 
-        // 4) Compile the current package
+        // 4) Compile the current package — expects RuntimeException on non-Windows
         PackageCompilation compilation = currentPackage.getCompilation();
-        JBallerinaBackend jBallerinaBackend = JBallerinaBackend.from(compilation, JvmTarget.JAVA_21);
-
-        resetPermissions(projectPath);
+        try {
+            JBallerinaBackend jBallerinaBackend = JBallerinaBackend.from(compilation, JvmTarget.JAVA_21);
+            Assert.fail("Expected RuntimeException when compiling with no write permission");
+        } catch (RuntimeException e) {
+            // expected
+        } finally {
+            resetPermissions(projectPath);
+        }
     }
 
     @Test(description = "tests package compilation")
@@ -1833,7 +1837,13 @@ public class TestBuildProject extends BaseTest {
     }
 
     @Test
-    public void testProjectClearCaches() {
+    public void testProjectClearCaches() throws IOException {
+        // Remove package_refresh_two from dist cache to ensure initial compilation has errors
+        Path refreshTwoCachePath = Path.of("build", ProjectConstants.DIST_CACHE_DIRECTORY,
+                "bala", "asmaj", "package_refresh_two", "0.1.0");
+        if (Files.exists(refreshTwoCachePath)) {
+            ProjectUtils.deleteDirectory(refreshTwoCachePath);
+        }
         Path projectDirPath = tempResourceDir.resolve("projects_for_refresh_tests").resolve("package_refresh_one");
         BuildProject buildProject = TestUtils.loadBuildProject(projectDirPath);
         PackageCompilation compilation = buildProject.currentPackage().getCompilation();
