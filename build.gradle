@@ -32,13 +32,13 @@ subprojects {
         repositories {
             maven {
                 if(project.version.endsWith('-SNAPSHOT')) {
-                    url "https://maven.wso2.org/nexus/content/repositories/snapshots/"
+                    url "http://localhost:8083/repository/ballerina_1_2_x/"
                 } else {
-                    url "https://maven.wso2.org/nexus/service/local/staging/deploy/maven2/"
+                    url "http://localhost:8083/repository/ballerina_1_2_x/"
                 }
                 credentials {
-                    username System.getenv("NEXUS_USERNAME")
-                    password System.getenv("NEXUS_PASSWORD")
+                    username "admin"
+                    password "123456789Aa."
                 }
             }
         }
@@ -48,10 +48,13 @@ subprojects {
         // Disable check snapshots temporarily
         failOnSnapshotDependencies = false
         failOnCommitNeeded = false
+        failOnUnversionedFiles = false
+        failOnUpdateNeeded = false
         tagTemplate = 'v${version}'
         git {
             // To release from any branch
             requireBranch = null
+            pushToRemote = 'origin'
         }
     }
 
