@@ -1,0 +1,14 @@
+# jline Telnet server DoS advisories (CVE-2026-56740 / CVE-2026-56741).
+#
+# The vulnerable code lives in org.jline:jline-remote-telnet. Ballerina bundles the
+# full org.jline:jline jar only for the `bal shell` REPL (reader/terminal) and never
+# instantiates or network-exposes the jline Telnet server, so these DoS issues are not
+# reachable at runtime.
+#
+# jline is currently pinned to 3.25.0 because the fixed release (3.30.14) regresses the
+# REPL: its dumb terminal ignores the provided streams and no longer terminates on input
+# EOF, hanging non-interactive `bal shell` and CI. Adopting the patched jline together
+# with the REPL EOF fix is tracked at:
+#   https://github.com/wso2-enterprise/integration-engineering/issues/2107
+CVE-2026-56740
+CVE-2026-56741
